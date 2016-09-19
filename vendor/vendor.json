@@ -1,0 +1,19 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "Wh67fxjuo+FsIINnXiN5IHYeTNo=",
+			"path": "github.com/go-sql-driver/mysql",
+			"revision": "d512f204a577a4ab037a1816604c48c9c13210be",
+			"revisionTime": "2015-11-12T16:33:55Z"
+		},
+		{
+			"checksumSHA1": "Drsz3oT4NmM2tVQCRk+occxVvPA=",
+			"path": "github.com/julienschmidt/httprouter",
+			"revision": "d8ff598a019f2c7bad0980917a588193cf26666e",
+			"revisionTime": "2016-08-10T19:53:38Z"
+		}
+	],
+	"rootPath": "github.com/asiainfoLDP/datafoundry_payment"
+}
