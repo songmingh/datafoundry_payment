@@ -19,6 +19,12 @@
 			"path": "github.com/julienschmidt/httprouter",
 			"revision": "d8ff598a019f2c7bad0980917a588193cf26666e",
 			"revisionTime": "2016-08-10T19:53:38Z"
+		},
+		{
+			"checksumSHA1": "fx4/pPdzHOWVuMItMEuZIkLdAIs=",
+			"path": "github.com/zonesan/clog",
+			"revision": "d178abe3a8096a54e44a8fee0d789e459d2c8d79",
+			"revisionTime": "2016-09-22T07:57:37Z"
 		}
 	],
 	"rootPath": "github.com/asiainfoLDP/datafoundry_payment"
