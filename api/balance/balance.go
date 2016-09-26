@@ -11,7 +11,10 @@ import (
 func Balance(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
 
-	balance := &api.Balance{50000.89}
+	balance := &api.Balance{
+		Balance: 50000.89,
+		Status:  "active",
+	}
 	api.RespOK(w, balance)
 	return
 

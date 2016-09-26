@@ -11,6 +11,9 @@ import (
 func Recharge(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
 
-	balance := &api.Balance{6000.89}
+	balance := &api.Balance{
+		Balance: 6000.89,
+		Status:  "active",
+	}
 	api.RespOK(w, balance)
 }

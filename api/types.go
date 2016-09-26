@@ -8,9 +8,11 @@ type APIResponse struct {
 }
 
 type Account struct {
-	Purchased bool   `json:"purchased"`
-	Notify    bool   `json:"notification"`
-	Plans     []Plan `json:"plans,omitempty"`
+	Purchased bool    `json:"purchased"`
+	Notify    bool    `json:"notification"`
+	Plans     []Plan  `json:"plans,omitempty"`
+	Status    string  `json:"status"`
+	Balance   Balance `json:"balance"`
 }
 
 type Amount struct {
@@ -24,11 +26,13 @@ type Amount struct {
 
 type Balance struct {
 	Balance float32 `json:"balance"`
+	Status  string  `json:"status,omitempty"`
 }
 
 type Checkout struct {
 	PlanId  string `json:"plan_id"`
 	Project string `json:"namespace,omitempty"`
+	Region  string `json:"region"` //need it?
 }
 
 type Plan struct {
