@@ -1,3 +1,3 @@
-package agent
+package pkg
 
 type CouponAgent service

@@ -1,4 +1,4 @@
-package agent
+package pkg
 
 import (
 	"fmt"
@@ -37,7 +37,6 @@ type service struct {
 }
 
 func NewAgent(httpClient *http.Client) *Agent {
-	fmt.Printf("hello world!")
 
 	if httpClient == nil {
 		httpClient = http.DefaultClient

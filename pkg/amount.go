@@ -1,4 +1,4 @@
-package agent
+package pkg
 
 import (
 	"github.com/asiainfoLDP/datafoundry_payment/api"
