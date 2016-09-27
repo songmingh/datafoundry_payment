@@ -10,7 +10,7 @@ type APIResponse struct {
 type Account struct {
 	Purchased bool    `json:"purchased"`
 	Notify    bool    `json:"notification"`
-	Plans     []Plan  `json:"plans,omitempty"`
+	Plans     []Plan  `json:"subscriptions,omitempty"`
 	Status    string  `json:"status"`
 	Balance   Balance `json:"balance"`
 }
