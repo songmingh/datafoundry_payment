@@ -2,14 +2,19 @@ package pkg
 
 import (
 	"net/http"
-
-	"github.com/asiainfoLDP/datafoundry_payment/api"
-	"github.com/asiainfoLDP/datafoundry_payment/fake"
 )
 
 type AccountAgent service
 
-func (u *AccountAgent) Get(r *http.Request) *api.Account {
-	account := fake.Account(r)
+type Account struct {
+	Purchased bool    `json:"purchased"`
+	Notify    bool    `json:"notification"`
+	Plans     []Plan  `json:"subscriptions,omitempty"`
+	Status    string  `json:"status"`
+	Balance   Balance `json:"balance"`
+}
+
+func (u *AccountAgent) Get(r *http.Request) *Account {
+	account := fakeAccount(r)
 	return account
 }

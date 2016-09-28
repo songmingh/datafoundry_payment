@@ -11,9 +11,8 @@ import (
 func Checkout(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
 
-	balance := &api.Balance{
-		Balance: 3000.01,
-		Status:  "active",
-	}
+	agent := api.Agent()
+	balance := agent.Balance.Get()
+
 	api.RespOK(w, balance)
 }

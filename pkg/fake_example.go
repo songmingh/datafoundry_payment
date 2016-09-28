@@ -1,18 +1,16 @@
-package fake
+package pkg
 
 import (
 	"net/http"
 	"time"
-
-	"github.com/asiainfoLDP/datafoundry_payment/api"
 )
 
-func Account(r *http.Request) *api.Account {
+func fakeAccount(r *http.Request) *Account {
 
-	account := &api.Account{
+	account := &Account{
 		Purchased: false,
 		Notify:    false,
-		Plans: []api.Plan{
+		Plans: []Plan{
 			{
 				PlanId:     "2736123def7232",
 				Type:       "normal",
@@ -32,9 +30,9 @@ func Account(r *http.Request) *api.Account {
 	return account
 }
 
-func Amount(r *http.Request) *api.Amount {
+func fakeAmount(r *http.Request) *Amount {
 
-	amount := &api.Amount{
+	amount := &Amount{
 		Id:           "03F232X238DKJ",
 		CreationTime: time.Now().Format(time.RFC3339),
 		Amount:       12.23,
@@ -51,9 +49,9 @@ func Amount(r *http.Request) *api.Amount {
 	return amount
 }
 
-func Amounts(r *http.Request) *[]api.Amount {
+func fakeAmounts(r *http.Request) *[]Amount {
 
-	amounts := &[]api.Amount{
+	amounts := &[]Amount{
 		{
 			Id:           "03Fwerqe2",
 			CreationTime: time.Now().Format(time.RFC3339),
@@ -83,9 +81,9 @@ func Amounts(r *http.Request) *[]api.Amount {
 	return amounts
 }
 
-func Market() *api.Market {
-	market := &api.Market{
-		Plans: &[]api.Plan{
+func fakeMarket() *Market {
+	market := &Market{
+		Plans: &[]Plan{
 			{
 				PlanId:       "1d3452ea-7f14-11e6-9fe0-2344dd5557c3",
 				Type:         "C",

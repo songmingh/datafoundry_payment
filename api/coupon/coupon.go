@@ -12,7 +12,8 @@ func Coupon(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
 
-	coupon := &api.Coupon{}
+	agent := api.Agent()
+	coupon := agent.Coupon.Get()
 
 	api.RespOK(w, coupon)
 }

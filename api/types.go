@@ -7,53 +7,5 @@ type APIResponse struct {
 	//Data    interface{} `json:"data,omitempty"`
 }
 
-type Account struct {
-	Purchased bool    `json:"purchased"`
-	Notify    bool    `json:"notification"`
-	Plans     []Plan  `json:"subscriptions,omitempty"`
-	Status    string  `json:"status"`
-	Balance   Balance `json:"balance"`
-}
-
-type Amount struct {
-	Id           string  `json:"trans_id"`
-	CreationTime string  `json:"creation_time"`
-	Amount       float32 `json:"amount"`
-	Desc         string  `json:"description"`
-	Payment      string  `json:"payment_method"`
-	Status       string  `json:"status"`
-}
-
-type Balance struct {
-	Balance float32 `json:"balance"`
-	Status  string  `json:"status,omitempty"`
-}
-
-type Checkout struct {
-	PlanId  string `json:"plan_id"`
-	Project string `json:"namespace,omitempty"`
-	Region  string `json:"region"` //need it?
-}
-
-type Plan struct {
-	PlanId       string  `json:"plan_id"`
-	Type         string  `json:"type"`
-	Price        float32 `json:"price"`
-	BillPeriod   string  `json:"bill_period"`
-	Desc         string  `json:"description"`
-	CreationTime string  `json:"creation_time,omitempty"`
-}
-
-type Market struct {
-	Plans *[]Plan `json:"plans"`
-}
-
-type Recharge struct {
-	Amount  float32 `json:"amount"`
-	Project string  `json:"namespace,omitempty"`
-}
-
 type Summary struct {
 }
-
-type Coupon struct{}

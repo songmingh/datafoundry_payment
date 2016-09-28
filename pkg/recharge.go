@@ -1,12 +1,16 @@
 package pkg
 
-import (
-	"github.com/asiainfoLDP/datafoundry_payment/api"
-)
-
 type RechargeAgent service
 
-func (*RechargeAgent) Get() *api.Recharge {
-	recharge := &api.Recharge{}
-	return recharge
+type Recharge struct {
+	Amount  float32 `json:"amount"`
+	Project string  `json:"namespace,omitempty"`
+}
+
+func (*RechargeAgent) Get() *Balance {
+	balance := &Balance{
+		Balance: 6000.89,
+		Status:  "active",
+	}
+	return balance
 }

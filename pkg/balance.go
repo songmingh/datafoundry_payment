@@ -1,12 +1,15 @@
 package pkg
 
-import (
-	"github.com/asiainfoLDP/datafoundry_payment/api"
-)
-
 type BalanceAgent service
+type Balance struct {
+	Balance float32 `json:"balance"`
+	Status  string  `json:"status,omitempty"`
+}
 
-func (u *BalanceAgent) Get() *api.Balance {
-	balance := &api.Balance{}
+func (u *BalanceAgent) Get() *Balance {
+	balance := &Balance{
+		Balance: 50000.89,
+		Status:  "active",
+	}
 	return balance
 }

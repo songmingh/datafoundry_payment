@@ -1,7 +1,6 @@
 package pkg
 
 import (
-	"fmt"
 	"net/http"
 	"net/url"
 	"sync"
