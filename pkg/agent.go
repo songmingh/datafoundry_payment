@@ -2,17 +2,24 @@ package pkg
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strings"
 	"sync"
+
+	"github.com/zonesan/clog"
 )
 
 const (
-	defaultBaseURL = "http://localhost:7071"
+	// defaultBaseURL = "http://localhost:7071"
+
+	// BaseURL should always be specified WITHOUT a trailing slash.
+	defaultMarketBaseURL = "https://datafoundry.plan.app.dataos.io"
 )
 
 // An Agent manages communication with the payment components API.
@@ -25,7 +32,7 @@ type Agent struct {
 
 	// BaseURL *url.URL
 
-	common service // Reuse a single struct instead of allocating one for each service on the heap.
+	common *service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// Agents used for talking to different parts of the payment components API.
 	Recharge *RechargeAgent
@@ -38,13 +45,17 @@ type Agent struct {
 }
 
 type service struct {
-	agent *Agent
+	*Agent
 }
 
 func NewAgent(httpClient *http.Client) *Agent {
 
 	if httpClient == nil {
-		httpClient = http.DefaultClient
+		tr := &http.Transport{
+			//DisableKeepAlives: true,
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+		httpClient = &http.Client{Transport: tr}
 	}
 
 	// baseURL, _ := url.Parse(defaultBaseURL)
@@ -52,14 +63,18 @@ func NewAgent(httpClient *http.Client) *Agent {
 	// agent := &Agent{client: httpClient, BaseURL: baseURL}
 	agent := &Agent{client: httpClient}
 
-	agent.common.agent = agent
-	agent.Account = (*AccountAgent)(&agent.common)
-	agent.Amount = (*AmountAgent)(&agent.common)
-	agent.Balance = (*BalanceAgent)(&agent.common)
-	agent.Checkout = (*CheckoutAgent)(&agent.common)
-	agent.Coupon = (*CouponAgent)(&agent.common)
-	agent.Market = (*MarketAgent)(&agent.common)
-	agent.Recharge = (*RechargeAgent)(&agent.common)
+	marketBaseURL, _ := url.Parse(defaultMarketBaseURL)
+
+	service := &service{agent}
+
+	agent.common = service
+	agent.Account = (*AccountAgent)(agent.common)
+	agent.Amount = (*AmountAgent)(agent.common)
+	agent.Balance = (*BalanceAgent)(agent.common)
+	agent.Checkout = (*CheckoutAgent)(agent.common)
+	agent.Coupon = (*CouponAgent)(agent.common)
+	agent.Market = &MarketAgent{Agent: agent.common.Agent, BaseURL: marketBaseURL}
+	agent.Recharge = (*RechargeAgent)(agent.common)
 
 	return agent
 }
@@ -70,6 +85,8 @@ func NewAgent(httpClient *http.Client) *Agent {
 // specified, the value pointed to by body is JSON encoded and included as the
 // request body.
 func (*Agent) NewRequest(method, urlStr string, body interface{}) (*http.Request, error) {
+
+	clog.Info(method, urlStr, body)
 
 	if _, err := url.Parse(urlStr); err != nil {
 		return nil, err
@@ -84,7 +101,7 @@ func (*Agent) NewRequest(method, urlStr string, body interface{}) (*http.Request
 		}
 	}
 
-	req, err := http.NewRequest(method, urlStr, buf)
+	req, err := http.NewRequest(strings.ToUpper(method), urlStr, buf)
 	if err != nil {
 		return nil, err
 	}
