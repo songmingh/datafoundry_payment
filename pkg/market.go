@@ -19,3 +19,7 @@ func (*MarketAgent) Get() *Market {
 	market := fakeMarket()
 	return market
 }
+func (*MarketAgent) List() *Market {
+	market := fakeMarket()
+	return market
+}
