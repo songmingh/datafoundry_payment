@@ -22,7 +22,7 @@ type Plan struct {
 }
 
 type Market struct {
-	Plans *[]Plan `json:"plans"`
+	Plans []Plan `json:"plans"`
 }
 
 func (agent *MarketAgent) Get(id string) (*Plan, error) {
@@ -75,6 +75,18 @@ func (agent *MarketAgent) List() (*Market, error) {
 		return nil, err
 	}
 
+	for _, result := range response.Results {
+		plan := Plan{
+			PlanId:       result.Plan_id,
+			Type:         result.Plan_type,
+			Price:        result.Price,
+			BillPeriod:   result.Cycle,
+			Desc:         fmt.Sprintf("%v %v", result.Spec1, result.Spec2),
+			CreationTime: result.Create_time,
+		}
+		market.Plans = append(market.Plans, plan)
+	}
+
 	return market, nil
 }
 
@@ -85,18 +97,18 @@ type marketResponse struct {
 }
 
 type QueryListResult struct {
-	Total   int64        `json:"total"`
-	Results []marketPlan `json:"results"`
+	Total   int64     `json:"total"`
+	Results []apiPlan `json:"results"`
 }
 
-type marketPlan struct {
-	id             int `json:"plan_id, omitempty"`
-	Plan_id        string
-	Plan_type      string
-	Specification1 string
-	Specification2 string
-	Price          float32
-	Cycle          string
-	Create_time    string
-	Status         string
+type apiPlan struct {
+	id          int
+	Plan_id     string  `json:"plan_id,omitempty"`
+	Plan_type   string  `json:"type,omitempty"`
+	Spec1       string  `json:"spec1,omitempty"`
+	Spec2       string  `json:"spec2,omitempty"`
+	Price       float32 `json:"price,omitempty"`
+	Cycle       string  `json:"bill_period,omitempty"`
+	Create_time string  `json:"creation_time,omitempty"`
+	Status      string  `json:"status,omitempty"`
 }

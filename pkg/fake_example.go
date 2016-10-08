@@ -83,7 +83,7 @@ func fakeAmounts(r *http.Request) *[]Amount {
 
 func fakeMarket() *Market {
 	market := &Market{
-		Plans: &[]Plan{
+		Plans: []Plan{
 			{
 				PlanId:       "1d3452ea-7f14-11e6-9fe0-2344dd5557c3",
 				Type:         "C",
