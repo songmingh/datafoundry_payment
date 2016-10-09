@@ -15,7 +15,9 @@ var PaymentAgent *pkg.Agent
 
 func (m *Mux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
-	RespError(w, ErrorNew(ErrCodeNotFound), http.StatusNotFound)
+	//RespError(w, ErrorNew(ErrCodeNotFound), http.StatusNotFound)
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte("not found"))
 }
 
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {

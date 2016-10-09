@@ -1,4 +1,4 @@
-package api
+package pkg
 
 import (
 	"fmt"
@@ -12,10 +12,11 @@ const (
 	ErrCodeForbidden          = 1403
 	ErrCodePermissionDenied   = 14030
 	ErrCodeNotFound           = 1404
+	ErrCodePlanNotFound       = 14040
 	ErrCodeMethodNotAllowed   = 1405
 	ErrCodeServiceUnavailable = 1503
 
-	ErrCodeUnknownError = 1600
+	ErrCodeUnknownError = 140010
 )
 
 var errText = map[int]string{
@@ -26,6 +27,7 @@ var errText = map[int]string{
 	ErrCodeForbidden:          "Forbidden",
 	ErrCodePermissionDenied:   "Permission denied",
 	ErrCodeNotFound:           "Not found",
+	ErrCodePlanNotFound:       "No such plan",
 	ErrCodeMethodNotAllowed:   "Method not allowed",
 	ErrCodeServiceUnavailable: "Service unavailable",
 
@@ -36,22 +38,23 @@ func ErrText(code int) string {
 	return errText[code]
 }
 
-type Error struct {
+type ErrorMessage struct {
 	Code    int
 	Message string
 }
 
-func (e Error) Error() string {
-	return fmt.Sprintf("%v: %v", e.Code, e.Message)
+func (e *ErrorMessage) Error() string {
+	return fmt.Sprintf("[%v] %v", e.Code, e.Message)
 }
 
-func (e Error) New(code int) error {
+func (e *ErrorMessage) New(code int) error {
 	e.Code = code
+
 	e.Message = ErrText(code)
 	return e
 }
 
 func ErrorNew(code int) error {
-	var e Error
+	var e ErrorMessage
 	return e.New(code)
 }

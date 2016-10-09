@@ -21,10 +21,10 @@
 			"revisionTime": "2016-08-10T19:53:38Z"
 		},
 		{
-			"checksumSHA1": "fx4/pPdzHOWVuMItMEuZIkLdAIs=",
+			"checksumSHA1": "AqhUBWm7JCj44y1Fz7bdDWSqPq8=",
 			"path": "github.com/zonesan/clog",
-			"revision": "d178abe3a8096a54e44a8fee0d789e459d2c8d79",
-			"revisionTime": "2016-09-22T07:57:37Z"
+			"revision": "7ed8b0534d6ec80b31e21fbbfbe1e3363cc22cc7",
+			"revisionTime": "2016-10-09T07:53:50Z"
 		}
 	],
 	"rootPath": "github.com/asiainfoLDP/datafoundry_payment"

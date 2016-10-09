@@ -1,1 +1,1 @@
-# A very simple logger writen in Golang.
+# A very simple logger written in Go.

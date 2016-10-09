@@ -19,7 +19,8 @@ const (
 	// defaultBaseURL = "http://localhost:7071"
 
 	// BaseURL should always be specified WITHOUT a trailing slash.
-	defaultMarketBaseURL = "https://datafoundry.plan.app.dataos.io"
+	defaultMarketBaseURL   = "https://datafoundry.plan.app.dataos.io"
+	defaultCheckoutBaseURL = "https://datafoundry.serviceusage.app.dataos.io"
 )
 
 // An Agent manages communication with the payment components API.
@@ -64,6 +65,7 @@ func NewAgent(httpClient *http.Client) *Agent {
 	agent := &Agent{client: httpClient}
 
 	marketBaseURL, _ := url.Parse(defaultMarketBaseURL)
+	checkoutBaseURL, _ := url.Parse(defaultCheckoutBaseURL)
 
 	service := &service{agent}
 
@@ -71,7 +73,7 @@ func NewAgent(httpClient *http.Client) *Agent {
 	agent.Account = (*AccountAgent)(agent.common)
 	agent.Amount = (*AmountAgent)(agent.common)
 	agent.Balance = (*BalanceAgent)(agent.common)
-	agent.Checkout = (*CheckoutAgent)(agent.common)
+	agent.Checkout = &CheckoutAgent{Agent: agent.common.Agent, BaseURL: checkoutBaseURL}
 	agent.Coupon = (*CouponAgent)(agent.common)
 	agent.Market = &MarketAgent{Agent: agent.common.Agent, BaseURL: marketBaseURL}
 	agent.Recharge = (*RechargeAgent)(agent.common)
@@ -146,10 +148,17 @@ func (c *Agent) Do(req *http.Request, v interface{}) error {
 		if w, ok := v.(io.Writer); ok {
 			io.Copy(w, resp.Body)
 		} else {
-			err = json.NewDecoder(resp.Body).Decode(v)
-			if err == io.EOF {
-				err = nil // ignore EOF errors caused by empty response body
+			var data []byte
+			data, err = ioutil.ReadAll(resp.Body)
+			if err == nil && data != nil {
+				clog.Debugf("%s", data)
+				err = json.Unmarshal(data, v)
 			}
+
+			// err = json.NewDecoder(resp.Body).Decode(v)
+			// if err == io.EOF {
+			// 	err = nil // ignore EOF errors caused by empty response body
+			// }
 		}
 	}
 

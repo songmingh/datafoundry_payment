@@ -12,8 +12,12 @@ func Market(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
 
 	agent := api.Agent()
-	market, _ := agent.Market.List()
+	market, err := agent.Market.List()
 
-	api.RespOK(w, market)
+	if err != nil {
+		api.RespError(w, err)
+	} else {
+		api.RespOK(w, market)
+	}
 
 }

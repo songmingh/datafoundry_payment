@@ -18,6 +18,8 @@ type Plan struct {
 	Price        float32 `json:"price"`
 	BillPeriod   string  `json:"bill_period"`
 	Desc         string  `json:"description"`
+	Desc2        string  `json:"description2,omitempty"`
+	Region       string  `json:"region,omitempty"`
 	CreationTime string  `json:"creation_time,omitempty"`
 }
 
@@ -29,8 +31,6 @@ func (agent *MarketAgent) Get(id string) (*Plan, error) {
 	// market := fakeMarket()
 
 	urlStr := fmt.Sprintf("/charge/v1/plans/%v", id)
-
-	plan := new(Plan)
 
 	rel, err := url.Parse(urlStr)
 	if err != nil {
@@ -44,9 +44,21 @@ func (agent *MarketAgent) Get(id string) (*Plan, error) {
 		return nil, err
 	}
 
-	if err := agent.Do(req, plan); err != nil {
+	plan := new(Plan)
+	response := new(planResponse)
+
+	if err := agent.Do(req, response); err != nil {
 		return nil, err
 	}
+
+	plan.PlanId = response.Plan_id
+	plan.Type = response.Plan_type
+	plan.Price = response.Price
+	plan.BillPeriod = response.Cycle
+	plan.Region = response.Region
+	plan.Desc = response.Spec1
+	plan.Desc2 = response.Spec2
+	plan.CreationTime = response.Create_time
 
 	return plan, nil
 
@@ -81,7 +93,9 @@ func (agent *MarketAgent) List() (*Market, error) {
 			Type:         result.Plan_type,
 			Price:        result.Price,
 			BillPeriod:   result.Cycle,
-			Desc:         fmt.Sprintf("%v %v", result.Spec1, result.Spec2),
+			Region:       result.Region,
+			Desc:         result.Spec1,
+			Desc2:        result.Spec2,
 			CreationTime: result.Create_time,
 		}
 		market.Plans = append(market.Plans, plan)
@@ -101,14 +115,21 @@ type QueryListResult struct {
 	Results []apiPlan `json:"results"`
 }
 
+type planResponse struct {
+	Code    uint   `json:"code"`
+	Msg     string `json:"msg"`
+	apiPlan `json:"data,omitempty"`
+}
+
 type apiPlan struct {
 	id          int
 	Plan_id     string  `json:"plan_id,omitempty"`
-	Plan_type   string  `json:"type,omitempty"`
-	Spec1       string  `json:"spec1,omitempty"`
-	Spec2       string  `json:"spec2,omitempty"`
+	Plan_type   string  `json:"plan_type,omitempty"`
+	Spec1       string  `json:"specification1,omitempty"`
+	Spec2       string  `json:"specification2,omitempty"`
 	Price       float32 `json:"price,omitempty"`
-	Cycle       string  `json:"bill_period,omitempty"`
+	Cycle       string  `json:"cycle,omitempty"`
+	Region      string  `json:"region,omitempty"`
 	Create_time string  `json:"creation_time,omitempty"`
 	Status      string  `json:"status,omitempty"`
 }
