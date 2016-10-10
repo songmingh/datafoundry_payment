@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"net/http"
 	"net/url"
 
 	"github.com/zonesan/clog"
@@ -18,6 +19,15 @@ type Checkout struct {
 }
 
 func (agent *CheckoutAgent) Get() *Balance {
+
+	balance := &Balance{
+		Balance: 3000.01,
+		Status:  "active",
+	}
+	return balance
+}
+
+func (agent *CheckoutAgent) GetOrder(r *http.Request) *Balance {
 
 	balance := &Balance{
 		Balance: 3000.01,

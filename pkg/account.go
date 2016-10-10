@@ -2,6 +2,8 @@ package pkg
 
 import (
 	"net/http"
+
+	"github.com/zonesan/clog"
 )
 
 type AccountAgent service
@@ -15,6 +17,12 @@ type Account struct {
 }
 
 func (u *AccountAgent) Get(r *http.Request) *Account {
+	r.ParseForm()
+
+	project := r.FormValue("project")
+
+	clog.Debug(project)
+
 	account := fakeAccount(r)
 	return account
 }
