@@ -14,6 +14,7 @@ type MarketAgent struct {
 
 type Plan struct {
 	PlanId       string  `json:"plan_id"`
+	Name         string  `json:"plan_name"`
 	Type         string  `json:"type"`
 	Price        float32 `json:"price"`
 	BillPeriod   string  `json:"bill_period"`
@@ -52,6 +53,7 @@ func (agent *MarketAgent) Get(id string) (*Plan, error) {
 	}
 
 	plan.PlanId = response.Plan_id
+	plan.Name = response.Name
 	plan.Type = response.Plan_type
 	plan.Price = response.Price
 	plan.BillPeriod = response.Cycle
@@ -90,6 +92,7 @@ func (agent *MarketAgent) List() (*Market, error) {
 	for _, result := range response.Results {
 		plan := Plan{
 			PlanId:       result.Plan_id,
+			Name:         result.Name,
 			Type:         result.Plan_type,
 			Price:        result.Price,
 			BillPeriod:   result.Cycle,
@@ -124,6 +127,7 @@ type planResponse struct {
 type apiPlan struct {
 	id          int
 	Plan_id     string  `json:"plan_id,omitempty"`
+	Name        string  `json:"plan_name,omitempty"`
 	Plan_type   string  `json:"plan_type,omitempty"`
 	Spec1       string  `json:"specification1,omitempty"`
 	Spec2       string  `json:"specification2,omitempty"`
