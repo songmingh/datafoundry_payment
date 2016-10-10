@@ -16,13 +16,34 @@ type Account struct {
 	Balance   Balance `json:"balance"`
 }
 
-func (u *AccountAgent) Get(r *http.Request) *Account {
+func (agent *AccountAgent) Get(r *http.Request) *Account {
 	r.ParseForm()
 
 	project := r.FormValue("project")
 
 	clog.Debug(project)
 
-	account := fakeAccount(r)
+	account := new(Account)
+
+	if orders, err := agent.Checkout.ListOrders(r); err != nil {
+		clog.Error(err)
+		return account
+	} else {
+		//clog.Debugf("%#v", orders)
+
+		if len(*orders) > 0 {
+			account.Purchased = true
+			for _, order := range *orders {
+				if plan, err := agent.Market.Get(order.Plan_id); err != nil {
+					clog.Error(err)
+				} else {
+					account.Plans = append(account.Plans, *plan)
+				}
+			}
+		}
+
+	}
+
+	//account := fakeAccount(r)
 	return account
 }

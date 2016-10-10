@@ -1,9 +1,11 @@
 package pkg
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
+	// "reflect"
 
 	"github.com/zonesan/clog"
 )
@@ -88,57 +90,33 @@ func (agent *MarketAgent) List(r *http.Request) (*Market, error) {
 
 	market := new(Market)
 
-	response := new(marketResponse)
+	response := new(RemoteListResponse)
 	if err := agent.Do(req, response); err != nil {
 		clog.Error(err)
 		return nil, err
 	}
 
-	for _, result := range response.Results {
-		plan := Plan{
-			PlanId:       result.Plan_id,
-			Name:         result.Name,
-			Type:         result.Plan_type,
-			Price:        result.Price,
-			BillPeriod:   result.Cycle,
-			Region:       result.Region,
-			Desc:         result.Spec1,
-			Desc2:        result.Spec2,
-			CreationTime: result.Create_time,
+	plans := []apiPlan{}
+
+	if err := json.Unmarshal([]byte(response.Data), &plans); err != nil {
+		clog.Error(err)
+		return nil, err
+	} else {
+		for _, result := range plans {
+			plan := Plan{
+				PlanId:       result.Plan_id,
+				Name:         result.Name,
+				Type:         result.Plan_type,
+				Price:        result.Price,
+				BillPeriod:   result.Cycle,
+				Region:       result.Region,
+				Desc:         result.Spec1,
+				Desc2:        result.Spec2,
+				CreationTime: result.Create_time,
+			}
+			market.Plans = append(market.Plans, plan)
 		}
-		market.Plans = append(market.Plans, plan)
 	}
 
 	return market, nil
-}
-
-type marketResponse struct {
-	Code            uint   `json:"code"`
-	Msg             string `json:"msg"`
-	QueryListResult `json:"data,omitempty"`
-}
-
-type QueryListResult struct {
-	Total   int64     `json:"total"`
-	Results []apiPlan `json:"results"`
-}
-
-type planResponse struct {
-	Code    uint   `json:"code"`
-	Msg     string `json:"msg"`
-	apiPlan `json:"data,omitempty"`
-}
-
-type apiPlan struct {
-	id          int
-	Plan_id     string  `json:"plan_id,omitempty"`
-	Name        string  `json:"plan_name,omitempty"`
-	Plan_type   string  `json:"plan_type,omitempty"`
-	Spec1       string  `json:"specification1,omitempty"`
-	Spec2       string  `json:"specification2,omitempty"`
-	Price       float32 `json:"price,omitempty"`
-	Cycle       string  `json:"cycle,omitempty"`
-	Region      string  `json:"region,omitempty"`
-	Create_time string  `json:"creation_time,omitempty"`
-	Status      string  `json:"status,omitempty"`
 }

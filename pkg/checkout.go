@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/url"
 
@@ -11,6 +12,7 @@ type CheckoutAgent struct {
 	*Agent
 	BaseURL *url.URL
 }
+
 type Checkout struct {
 	PlanId  string `json:"plan_id"`
 	Project string `json:"namespace,omitempty"`
@@ -27,13 +29,41 @@ func (agent *CheckoutAgent) Get() *Balance {
 	return balance
 }
 
-func (agent *CheckoutAgent) GetOrder(r *http.Request) *Balance {
+func (agent *CheckoutAgent) ListOrders(r *http.Request) (*[]apiPurchaseOrder, error) {
+	urlStr := "/usageapi/v1/orders"
 
-	balance := &Balance{
-		Balance: 3000.01,
-		Status:  "active",
+	if r.URL.RawQuery != "" {
+		urlStr += "?" + r.URL.RawQuery
 	}
-	return balance
+
+	rel, err := url.Parse(urlStr)
+	if err != nil {
+		return nil, err
+	}
+
+	u := agent.BaseURL.ResolveReference(rel)
+
+	req, err := agent.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	response := new(RemoteListResponse)
+	if err := agent.Do(req, response); err != nil {
+		clog.Error(err)
+		return nil, err
+	}
+
+	orders := []apiPurchaseOrder{}
+
+	if err := json.Unmarshal([]byte(response.Data), &orders); err != nil {
+		clog.Error(err)
+		return nil, err
+	} else {
+		clog.Infof("%v order(s) listed.", len(orders))
+		return &orders, nil
+	}
+
 }
 
 func (agent *CheckoutAgent) Create(checkout *Checkout) (*Checkout, error) {
@@ -78,4 +108,10 @@ type checkoutResponse struct {
 	Code    uint   `json:"code"`
 	Msg     string `json:"msg"`
 	OrderID string `json:"data,omitempty"`
+}
+
+type orderResponse struct {
+	Code uint        `json:"code"`
+	Msg  string      `json:"msg"`
+	Data interface{} `json:"data,omitempty"`
 }
