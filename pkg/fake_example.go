@@ -12,8 +12,8 @@ func fakeAccount(r *http.Request) *Account {
 		Notify:    false,
 		Plans: []Plan{
 			{
-				PlanId:     "2736123def7232",
-				Type:       "normal",
+				PlanId:     "29BA4085-B3B4-8308-2097-7A5340E770B9",
+				Type:       "C",
 				Price:      10.00,
 				BillPeriod: "monthly",
 				Desc:       "1 CPU Core, 512M Memory",

@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"fmt"
+	"net/http"
 	"net/url"
 
 	"github.com/zonesan/clog"
@@ -66,8 +67,12 @@ func (agent *MarketAgent) Get(id string) (*Plan, error) {
 
 }
 
-func (agent *MarketAgent) List() (*Market, error) {
+func (agent *MarketAgent) List(r *http.Request) (*Market, error) {
 	urlStr := "/charge/v1/plans"
+
+	if r.URL.RawQuery != "" {
+		urlStr += "?" + r.URL.RawQuery
+	}
 
 	rel, err := url.Parse(urlStr)
 	if err != nil {
