@@ -1,8 +1,6 @@
 package api
 
 import (
-	// "github.com/golang/glog"
-	// "github.com/julienschmidt/httprouter"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"

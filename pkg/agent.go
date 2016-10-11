@@ -21,6 +21,7 @@ const (
 	// BaseURL should always be specified WITHOUT a trailing slash.
 	defaultMarketBaseURL   = "https://datafoundry.plan.app.dataos.io"
 	defaultCheckoutBaseURL = "https://datafoundry.serviceusage.app.dataos.io"
+	defaultRechargeBaseURL = "https://datafoundry.recharge.app.dataos.io"
 )
 
 // An Agent manages communication with the payment components API.

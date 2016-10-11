@@ -51,3 +51,11 @@ type apiPurchaseOrder struct {
 	Status          int        `json:"status,omitempty"`
 	Creator         string     `json:"creator,omitempty"`
 }
+
+type apiBalance struct {
+	Namespace string  `json:"namespace"`
+	CreateAt  string  `json:"create_at"`
+	UpdateAt  string  `json:"update_at"`
+	Balance   float32 `json:"balance"`
+	Status    string  `json:"state,omitempty"`
+}
