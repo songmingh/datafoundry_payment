@@ -5,6 +5,12 @@ import (
 	"time"
 )
 
+type RemoteResponse struct {
+	Code    uint            `json:"code"`
+	Message string          `json:"msg"`
+	Data    json.RawMessage `json:"data"`
+}
+
 type RemoteListResponse struct {
 	Code            uint   `json:"code"`
 	Msg             string `json:"msg"`
@@ -14,12 +20,6 @@ type RemoteListResponse struct {
 type QueryListResult struct {
 	Total int64           `json:"total"`
 	Data  json.RawMessage `json:"results"`
-}
-
-type planResponse struct {
-	Code    uint   `json:"code"`
-	Msg     string `json:"msg"`
-	apiPlan `json:"data,omitempty"`
 }
 
 type apiPlan struct {

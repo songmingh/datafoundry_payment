@@ -48,22 +48,30 @@ func (agent *MarketAgent) Get(id string) (*Plan, error) {
 		return nil, err
 	}
 
-	plan := new(Plan)
-	response := new(planResponse)
+	response := new(RemoteResponse)
 
 	if err := agent.Do(req, response); err != nil {
 		return nil, err
 	}
 
-	plan.PlanId = response.Plan_id
-	plan.Name = response.Name
-	plan.Type = response.Plan_type
-	plan.Price = response.Price
-	plan.BillPeriod = response.Cycle
-	plan.Region = response.Region
-	plan.Desc = response.Spec1
-	plan.Desc2 = response.Spec2
-	plan.CreationTime = response.Create_time
+	apiplan := new(apiPlan)
+	plan := new(Plan)
+
+	if err := json.Unmarshal([]byte(response.Data), apiplan); err != nil {
+		clog.Error(err)
+		return nil, err
+	} else {
+		clog.Infof("%#v", apiplan)
+		plan.PlanId = apiplan.Plan_id
+		plan.Name = apiplan.Name
+		plan.Type = apiplan.Plan_type
+		plan.Price = apiplan.Price
+		plan.BillPeriod = apiplan.Cycle
+		plan.Region = apiplan.Region
+		plan.Desc = apiplan.Spec1
+		plan.Desc2 = apiplan.Spec2
+		plan.CreationTime = apiplan.Create_time
+	}
 
 	return plan, nil
 
