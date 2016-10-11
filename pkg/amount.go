@@ -12,6 +12,7 @@ type Amount struct {
 	Amount       float32 `json:"amount"`
 	Desc         string  `json:"description"`
 	Payment      string  `json:"payment_method"`
+	Comment      string  `json:"comment"`
 	Status       string  `json:"status"`
 }
 

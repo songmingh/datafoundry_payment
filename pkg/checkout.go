@@ -109,9 +109,3 @@ type checkoutResponse struct {
 	Msg     string `json:"msg"`
 	OrderID string `json:"data,omitempty"`
 }
-
-type orderResponse struct {
-	Code uint        `json:"code"`
-	Msg  string      `json:"msg"`
-	Data interface{} `json:"data,omitempty"`
-}

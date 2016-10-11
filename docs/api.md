@@ -1,4 +1,4 @@
-GET /payment/v1/account
+GET /payment/v1/account?project=chaizs-org
 
 {
   "purchased": false,
@@ -18,7 +18,7 @@ GET /payment/v1/account
   }
 }
 
-GET /payment/v1/market
+GET /payment/v1/market?region=aws&type=c
 
 {
   "plans": [
@@ -26,6 +26,8 @@ GET /payment/v1/market
       "plan_id": "1d3452ea-7f14-11e6-9fe0-2344dd5557c3",
       "type": "C",
       "price": 20,
+      "level":"S",
+      "name":"asdwe",
       "bill_period": "M",
       "description": "1 CPU Core, 512M Memory",
       "creation_time": "2016-09-26T17:27:04+08:00"
