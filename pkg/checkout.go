@@ -20,6 +20,8 @@ type Checkout struct {
 	OrderID string `json:"orderid,omitempty"`
 }
 
+type PurchasedOrder apiPurchaseOrder
+
 func (agent *CheckoutAgent) Get() *Balance {
 
 	balance := &Balance{
@@ -29,7 +31,7 @@ func (agent *CheckoutAgent) Get() *Balance {
 	return balance
 }
 
-func (agent *CheckoutAgent) ListOrders(r *http.Request) (*[]apiPurchaseOrder, error) {
+func (agent *CheckoutAgent) ListOrders(r *http.Request) (*[]PurchasedOrder, error) {
 	urlStr := "/usageapi/v1/orders"
 
 	if r.URL.RawQuery != "" {
@@ -54,7 +56,7 @@ func (agent *CheckoutAgent) ListOrders(r *http.Request) (*[]apiPurchaseOrder, er
 		return nil, err
 	}
 
-	orders := []apiPurchaseOrder{}
+	orders := []PurchasedOrder{}
 
 	if err := json.Unmarshal([]byte(response.Data), &orders); err != nil {
 		clog.Error(err)
@@ -66,7 +68,20 @@ func (agent *CheckoutAgent) ListOrders(r *http.Request) (*[]apiPurchaseOrder, er
 
 }
 
-func (agent *CheckoutAgent) Create(r *http.Request, checkout *Checkout) (*Checkout, error) {
+func (agent *CheckoutAgent) Create(r *http.Request, checkout *Checkout) (*PurchasedOrder, error) {
+	urlStr := "/usageapi/v1/orders"
+
+	order := new(PurchasedOrder)
+	if err := doRequest(agent, r, "POST", urlStr, checkout, order); err != nil {
+		clog.Error(err)
+
+		return nil, err
+	}
+
+	return order, nil
+}
+
+func (agent *CheckoutAgent) Create2(r *http.Request, checkout *Checkout) (*Checkout, error) {
 	urlStr := "/usageapi/v1/orders"
 	plan, err := agent.Market.Get(r, checkout.PlanId)
 
@@ -102,6 +117,14 @@ func (agent *CheckoutAgent) Create(r *http.Request, checkout *Checkout) (*Checko
 	checkout.OrderID = response.OrderID
 
 	return checkout, nil
+}
+
+func (agent *CheckoutAgent) Url() *url.URL {
+	return agent.BaseURL
+}
+
+func (agent *CheckoutAgent) Instance() *Agent {
+	return agent.Agent
 }
 
 type checkoutResponse struct {

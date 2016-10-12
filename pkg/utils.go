@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/zonesan/clog"
 )
@@ -46,7 +47,7 @@ func doRequest(agent AgentInterface, r *http.Request, method, urlStr string, req
 		return err
 	}
 
-	req, err := client.NewRequest(method, u.String(), reqBody)
+	req, err := client.NewRequest(strings.ToUpper(method), u.String(), reqBody)
 	if err != nil {
 		return err
 	}
