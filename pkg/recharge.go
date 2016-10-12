@@ -26,11 +26,6 @@ func (*RechargeAgent) Get() *Balance {
 }
 
 func (agent *RechargeAgent) Create(r *http.Request, recharge *Recharge) (*Balance, error) {
-	// balance := &Balance{
-	// 	Balance: 6000.89,
-	// 	Status:  "active",
-	// }
-	// return balance, nil
 
 	urlStr := "/charge/v1/recharge"
 

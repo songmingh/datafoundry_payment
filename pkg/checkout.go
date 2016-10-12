@@ -45,10 +45,18 @@ func (agent *CheckoutAgent) ListOrders(r *http.Request) (*[]PurchasedOrder, erro
 
 	u := agent.BaseURL.ResolveReference(rel)
 
+	token, err := getToken(r)
+	if err != nil {
+		clog.Error(err)
+		return nil, err
+	}
+
 	req, err := agent.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
 	}
+
+	req.Header.Set("Authorization", token)
 
 	response := new(RemoteListResponse)
 	if err := agent.Do(req, response); err != nil {

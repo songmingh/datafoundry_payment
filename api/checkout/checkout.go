@@ -30,4 +30,5 @@ func Checkout(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 
 	api.RespOK(w, checkoutResult)
+	//http.Redirect(w, r, "http://www.google.com", http.StatusMovedPermanently)
 }

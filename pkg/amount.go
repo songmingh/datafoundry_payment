@@ -55,6 +55,7 @@ func (agent *AmountAgent) List(r *http.Request) (*Amounts, error) {
 				Id:           transaction.TransactionId,
 				CreationTime: transaction.CreateTime,
 				Amount:       transaction.Amount,
+				Desc:         transaction.Type,
 			}
 			amounts.Amounts = append(amounts.Amounts, amount)
 		}

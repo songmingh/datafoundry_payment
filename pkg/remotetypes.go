@@ -37,18 +37,17 @@ type apiPlan struct {
 }
 
 type apiPurchaseOrder struct {
-	Order_id        string `json:"orderId,omitempty"`
+	Order_id        string `json:"order_id,omitempty"`
 	Account_id      string `json:"project,omitempty"` // accountId
 	Region          string `json:"region,omitempty"`
-	Quantities      int    `json:"quantities,omitempty"`
-	Plan_id         string `json:"planId,omitempty"`
+	Plan_id         string `json:"plan_id,omitempty"`
 	Plan_type       string `json:"_,omitempty"`
-	Start_time      string `json:"startTime,omitempty"`
-	End_time        string `json:"_,omitempty"`       // po
-	EndTime         string `json:"endTime,omitempty"` // vo
+	Start_time      string `json:"start_time,omitempty"`
+	End_time        string `json:"_,omitempty"`        // po
+	EndTime         string `json:"end_time,omitempty"` // vo
 	Deadline_time   string `json:"deadline,omitempty"`
 	Last_consume_id int    `json:"_,omitempty"`
-	Status          int    `json:"status,omitempty"`
+	Status          string `json:"status,omitempty"`
 	Creator         string `json:"creator,omitempty"`
 }
 
