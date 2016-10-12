@@ -1,7 +1,11 @@
 package pkg
 
 import (
+	"encoding/json"
 	"net/http"
+	"net/url"
+
+	"github.com/zonesan/clog"
 )
 
 func getToken(r *http.Request) (string, error) {
@@ -16,16 +20,49 @@ func getToken(r *http.Request) (string, error) {
 	return token, nil
 }
 
-func doRequest(agent AgentInterface, r *http.Request, urlStr string, reqBody, respBody interface{}) error {
-	agent.BaseURL()
+type AgentInterface interface {
+	Url() *url.URL
+	Instance() *Agent
+}
+
+func doRequest(agent AgentInterface, r *http.Request, method, urlStr string, reqBody, respBody interface{}) error {
+	baseURL := agent.Url()
+	client := agent.Instance()
+
+	if r.URL.RawQuery != "" {
+		urlStr += "?" + r.URL.RawQuery
+	}
+
+	rel, err := url.Parse(urlStr)
+	if err != nil {
+		return err
+	}
+
+	u := baseURL.ResolveReference(rel)
+
+	token, err := getToken(r)
+	if err != nil {
+		clog.Error(err)
+		return err
+	}
+
+	req, err := client.NewRequest(method, u.String(), reqBody)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Authorization", token)
+
+	response := new(RemoteResponse)
+
+	if err := client.Do(req, response); err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal([]byte(response.Data), respBody); err != nil {
+		clog.Error(err)
+		return err
+	}
+
 	return nil
-}
-
-type AgentInterface struct {
-	*Agent
-	Interface
-}
-
-type Interface interface {
-	BaseURL() string
 }

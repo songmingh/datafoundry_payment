@@ -21,8 +21,8 @@ const (
 	// BaseURL should always be specified WITHOUT a trailing slash.
 	defaultMarketBaseURL   = "https://datafoundry.plan.app.dataos.io"
 	defaultCheckoutBaseURL = "https://datafoundry.serviceusage.app.dataos.io"
-	defaultRechargeBaseURL = "https://datafoundry.recharge.app.dataos.io"
-	defaultBalanceBaseURL  = defaultRechargeBaseURL
+	defaultBalanceBaseURL  = "https://datafoundry.recharge.app.dataos.io"
+	defaultRechargeBaseURL = defaultBalanceBaseURL
 )
 
 // An Agent manages communication with the payment components API.
@@ -69,6 +69,7 @@ func NewAgent(httpClient *http.Client) *Agent {
 	marketBaseURL, _ := url.Parse(defaultMarketBaseURL)
 	checkoutBaseURL, _ := url.Parse(defaultCheckoutBaseURL)
 	balanceBaseURL, _ := url.Parse(defaultBalanceBaseURL)
+	rechargeBaeURL, _ := url.Parse(defaultRechargeBaseURL)
 
 	service := &service{agent}
 
@@ -79,7 +80,7 @@ func NewAgent(httpClient *http.Client) *Agent {
 	agent.Checkout = &CheckoutAgent{Agent: agent.common.Agent, BaseURL: checkoutBaseURL}
 	agent.Coupon = (*CouponAgent)(agent.common)
 	agent.Market = &MarketAgent{Agent: agent.common.Agent, BaseURL: marketBaseURL}
-	agent.Recharge = (*RechargeAgent)(agent.common)
+	agent.Recharge = &RechargeAgent{Agent: agent.common.Agent, BaseURL: rechargeBaeURL}
 
 	return agent
 }

@@ -27,6 +27,7 @@ type apiPlan struct {
 	Plan_id     string  `json:"plan_id,omitempty"`
 	Name        string  `json:"plan_name,omitempty"`
 	Plan_type   string  `json:"plan_type,omitempty"`
+	Level       int     `json:"plan_level,omitempty"`
 	Spec1       string  `json:"specification1,omitempty"`
 	Spec2       string  `json:"specification2,omitempty"`
 	Price       float32 `json:"price,omitempty"`

@@ -18,6 +18,7 @@ type MarketAgent struct {
 type Plan struct {
 	PlanId       string  `json:"plan_id"`
 	Name         string  `json:"plan_name"`
+	Level        int     `json:"plan_level"`
 	Type         string  `json:"type"`
 	Price        float32 `json:"price"`
 	BillPeriod   string  `json:"bill_period"`
@@ -68,6 +69,7 @@ func (agent *MarketAgent) Get(r *http.Request, id string) (*Plan, error) {
 		clog.Infof("%#v", apiplan)
 		plan.PlanId = apiplan.Plan_id
 		plan.Name = apiplan.Name
+		plan.Level = apiplan.Level
 		plan.Type = apiplan.Plan_type
 		plan.Price = apiplan.Price
 		plan.BillPeriod = apiplan.Cycle
