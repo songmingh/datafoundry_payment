@@ -23,8 +23,8 @@ func createRouter() *httprouter.Router {
 	router.POST(PATHPREFIX+"/checkout", checkout.Checkout)
 	router.GET(PATHPREFIX+"/balance", balance.Balance)
 	router.GET(PATHPREFIX+"/market", market.Market)
-	router.GET(PATHPREFIX+"/amount", amount.AmountList)
-	router.GET(PATHPREFIX+"/amount/:tid", amount.Amount)
+	router.GET(PATHPREFIX+"/amounts", amount.AmountList)
+	router.GET(PATHPREFIX+"/amounts/:tid", amount.Amount)
 	router.GET(PATHPREFIX+"/account", account.Account)
 	router.GET(PATHPREFIX+"/coupon", coupon.Coupon)
 

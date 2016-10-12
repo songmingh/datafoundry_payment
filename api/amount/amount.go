@@ -10,10 +10,16 @@ import (
 
 func AmountList(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
-	agent := api.Agent()
-	amounts := agent.Amount.List(r)
 
-	api.RespOK(w, amounts)
+	agent := api.Agent()
+	amounts, err := agent.Amount.List(r)
+
+	if err != nil {
+		api.RespError(w, err)
+	} else {
+		api.RespOK(w, amounts)
+	}
+
 	return
 }
 
@@ -21,9 +27,16 @@ func Amount(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
 
-	agent := api.Agent()
-	amount := agent.Amount.Get(r)
+	tid := ps.ByName("tid")
 
-	api.RespOK(w, amount)
+	agent := api.Agent()
+	amount, err := agent.Amount.Get(r, tid)
+
+	if err != nil {
+		api.RespError(w, err)
+	} else {
+		api.RespOK(w, amount)
+	}
+
 	return
 }

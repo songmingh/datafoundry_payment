@@ -2,7 +2,6 @@ package pkg
 
 import (
 	"encoding/json"
-	"time"
 )
 
 type RemoteResponse struct {
@@ -38,19 +37,19 @@ type apiPlan struct {
 }
 
 type apiPurchaseOrder struct {
-	Order_id        string     `json:"orderId,omitempty"`
-	Account_id      string     `json:"project,omitempty"` // accountId
-	Region          string     `json:"region,omitempty"`
-	Quantities      int        `json:"quantities,omitempty"`
-	Plan_id         string     `json:"planId,omitempty"`
-	Plan_type       string     `json:"_,omitempty"`
-	Start_time      time.Time  `json:"startTime,omitempty"`
-	End_time        time.Time  `json:"_,omitempty"`       // po
-	EndTime         *time.Time `json:"endTime,omitempty"` // vo
-	Deadline_time   time.Time  `json:"deadline,omitempty"`
-	Last_consume_id int        `json:"_,omitempty"`
-	Status          int        `json:"status,omitempty"`
-	Creator         string     `json:"creator,omitempty"`
+	Order_id        string `json:"orderId,omitempty"`
+	Account_id      string `json:"project,omitempty"` // accountId
+	Region          string `json:"region,omitempty"`
+	Quantities      int    `json:"quantities,omitempty"`
+	Plan_id         string `json:"planId,omitempty"`
+	Plan_type       string `json:"_,omitempty"`
+	Start_time      string `json:"startTime,omitempty"`
+	End_time        string `json:"_,omitempty"`       // po
+	EndTime         string `json:"endTime,omitempty"` // vo
+	Deadline_time   string `json:"deadline,omitempty"`
+	Last_consume_id int    `json:"_,omitempty"`
+	Status          int    `json:"status,omitempty"`
+	Creator         string `json:"creator,omitempty"`
 }
 
 type apiBalance struct {
@@ -59,4 +58,15 @@ type apiBalance struct {
 	UpdateAt  string  `json:"update_at"`
 	Balance   float32 `json:"balance"`
 	Status    string  `json:"state,omitempty"`
+}
+
+type apiTransaction struct {
+	TransactionId string  `json:"transactionId"`
+	Type          string  `json:"type"`
+	Amount        float64 `json:"amount"`
+	Namespace     string  `json:"namespace"`
+	User          string  `json:"user,omitempty"`
+	CreateTime    string  `json:"createtime,omitempty"`
+	Status        string  `json:"status,omitempty"`
+	StatusTime    string  `json:"statustime,omitempty"`
 }

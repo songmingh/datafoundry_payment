@@ -74,7 +74,6 @@ func (agent *CheckoutAgent) Create(r *http.Request, checkout *Checkout) (*Purcha
 	order := new(PurchasedOrder)
 	if err := doRequest(agent, r, "POST", urlStr, checkout, order); err != nil {
 		clog.Error(err)
-
 		return nil, err
 	}
 

@@ -23,6 +23,7 @@ const (
 	defaultCheckoutBaseURL = "https://datafoundry.serviceusage.app.dataos.io"
 	defaultBalanceBaseURL  = "https://datafoundry.recharge.app.dataos.io"
 	defaultRechargeBaseURL = defaultBalanceBaseURL
+	defaultAmountBaseURL   = defaultBalanceBaseURL
 )
 
 // An Agent manages communication with the payment components API.
@@ -70,12 +71,13 @@ func NewAgent(httpClient *http.Client) *Agent {
 	checkoutBaseURL, _ := url.Parse(defaultCheckoutBaseURL)
 	balanceBaseURL, _ := url.Parse(defaultBalanceBaseURL)
 	rechargeBaeURL, _ := url.Parse(defaultRechargeBaseURL)
+	amountBaeURL, _ := url.Parse(defaultAmountBaseURL)
 
 	service := &service{agent}
 
 	agent.common = service
 	agent.Account = (*AccountAgent)(agent.common)
-	agent.Amount = (*AmountAgent)(agent.common)
+	agent.Amount = &AmountAgent{Agent: agent.common.Agent, BaseURL: amountBaeURL}
 	agent.Balance = &BalanceAgent{Agent: agent.common.Agent, BaseURL: balanceBaseURL}
 	agent.Checkout = &CheckoutAgent{Agent: agent.common.Agent, BaseURL: checkoutBaseURL}
 	agent.Coupon = (*CouponAgent)(agent.common)
@@ -209,7 +211,7 @@ func CheckResponse(r *http.Response) error {
 	errorResponse := &ErrorResponse{Response: r}
 	data, err := ioutil.ReadAll(r.Body)
 	if err == nil && data != nil {
-		clog.Errorf("%s", data)
+		//clog.Errorf("%s", data)
 		json.Unmarshal(data, errorResponse)
 	}
 	return errorResponse
