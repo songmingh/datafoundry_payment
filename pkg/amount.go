@@ -20,6 +20,7 @@ type Amount struct {
 	Desc         string  `json:"description"`
 	Payment      string  `json:"payment_method"`
 	Comment      string  `json:"comment"`
+	Namespace    string  `json:"namespace"`
 	Status       string  `json:"status"`
 }
 
@@ -46,7 +47,7 @@ func (agent *AmountAgent) List(r *http.Request) (*Amounts, error) {
 	transactions := []apiTransaction{}
 	amounts := new(Amounts)
 
-	if err := doRequest(agent, r, "GET", urlStr, nil, &transactions); err != nil {
+	if err := doRequestList(agent, r, "GET", urlStr, nil, &transactions); err != nil {
 		clog.Error(err)
 		return nil, err
 	} else {
@@ -56,6 +57,8 @@ func (agent *AmountAgent) List(r *http.Request) (*Amounts, error) {
 				CreationTime: transaction.CreateTime,
 				Amount:       transaction.Amount,
 				Desc:         transaction.Type,
+				Namespace:    transaction.Namespace,
+				Status:       transaction.Status,
 			}
 			amounts.Amounts = append(amounts.Amounts, amount)
 		}

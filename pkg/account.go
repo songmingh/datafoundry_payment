@@ -37,7 +37,11 @@ func (agent *AccountAgent) Get(r *http.Request) *Account {
 				if plan, err := agent.Market.Get(r, order.Plan_id); err != nil {
 					clog.Error(err)
 				} else {
-					account.Plans = append(account.Plans, *plan)
+					if plan.PlanId != "" {
+						account.Plans = append(account.Plans, *plan)
+					} else {
+						clog.Warn("empty plan id ...", plan)
+					}
 				}
 			}
 		}

@@ -67,3 +67,45 @@ func doRequest(agent AgentInterface, r *http.Request, method, urlStr string, req
 
 	return nil
 }
+
+func doRequestList(agent AgentInterface, r *http.Request, method, urlStr string, reqBody, respBody interface{}) error {
+	baseURL := agent.Url()
+	client := agent.Instance()
+
+	if r.URL.RawQuery != "" {
+		urlStr += "?" + r.URL.RawQuery
+	}
+
+	rel, err := url.Parse(urlStr)
+	if err != nil {
+		return err
+	}
+
+	u := baseURL.ResolveReference(rel)
+
+	token, err := getToken(r)
+	if err != nil {
+		clog.Error(err)
+		return err
+	}
+
+	req, err := client.NewRequest(strings.ToUpper(method), u.String(), reqBody)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Authorization", token)
+
+	response := new(RemoteListResponse)
+
+	if err := client.Do(req, response); err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal([]byte(response.Data), respBody); err != nil {
+		clog.Error(err)
+		return err
+	}
+
+	return nil
+}
