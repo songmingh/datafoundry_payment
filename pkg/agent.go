@@ -183,15 +183,15 @@ func (e *Error) Error() string {
 
 type ErrorResponse struct {
 	Response *http.Response // HTTP response that caused this error
-	Message  string         `json:"message"` // error message
-	Errors   []Error        `json:"errors"`  // more detail on individual errors
+	Message  string         `json:"msg"`  // error message
+	Code     int            `json:"code"` // more detail on individual errors
 
 }
 
 func (r *ErrorResponse) Error() string {
 	return fmt.Sprintf("%v %v: %d %v %+v",
 		r.Response.Request.Method, r.Response.Request.URL,
-		r.Response.StatusCode, r.Message, r.Errors)
+		r.Response.StatusCode, r.Message, r.Code)
 }
 
 // CheckResponse checks the API response for errors, and returns them if
@@ -209,7 +209,7 @@ func CheckResponse(r *http.Response) error {
 	errorResponse := &ErrorResponse{Response: r}
 	data, err := ioutil.ReadAll(r.Body)
 	if err == nil && data != nil {
-		clog.Errorf("%#v", data)
+		clog.Errorf("%s", data)
 		json.Unmarshal(data, errorResponse)
 	}
 	return errorResponse
