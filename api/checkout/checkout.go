@@ -22,7 +22,7 @@ func Checkout(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	agent := api.Agent()
 
-	checkoutResult, err := agent.Checkout.Create(checkout)
+	checkoutResult, err := agent.Checkout.Create(r, checkout)
 	if err != nil {
 		clog.Error(err)
 		api.RespError(w, err)

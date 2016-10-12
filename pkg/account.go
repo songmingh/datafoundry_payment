@@ -34,7 +34,7 @@ func (agent *AccountAgent) Get(r *http.Request) *Account {
 		if len(*orders) > 0 {
 			account.Purchased = true
 			for _, order := range *orders {
-				if plan, err := agent.Market.Get(order.Plan_id); err != nil {
+				if plan, err := agent.Market.Get(r, order.Plan_id); err != nil {
 					clog.Error(err)
 				} else {
 					account.Plans = append(account.Plans, *plan)

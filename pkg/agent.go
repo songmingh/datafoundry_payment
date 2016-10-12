@@ -22,6 +22,7 @@ const (
 	defaultMarketBaseURL   = "https://datafoundry.plan.app.dataos.io"
 	defaultCheckoutBaseURL = "https://datafoundry.serviceusage.app.dataos.io"
 	defaultRechargeBaseURL = "https://datafoundry.recharge.app.dataos.io"
+	defaultBalanceBaseURL  = defaultRechargeBaseURL
 )
 
 // An Agent manages communication with the payment components API.
@@ -67,13 +68,14 @@ func NewAgent(httpClient *http.Client) *Agent {
 
 	marketBaseURL, _ := url.Parse(defaultMarketBaseURL)
 	checkoutBaseURL, _ := url.Parse(defaultCheckoutBaseURL)
+	balanceBaseURL, _ := url.Parse(defaultBalanceBaseURL)
 
 	service := &service{agent}
 
 	agent.common = service
 	agent.Account = (*AccountAgent)(agent.common)
 	agent.Amount = (*AmountAgent)(agent.common)
-	agent.Balance = (*BalanceAgent)(agent.common)
+	agent.Balance = &BalanceAgent{Agent: agent.common.Agent, BaseURL: balanceBaseURL}
 	agent.Checkout = &CheckoutAgent{Agent: agent.common.Agent, BaseURL: checkoutBaseURL}
 	agent.Coupon = (*CouponAgent)(agent.common)
 	agent.Market = &MarketAgent{Agent: agent.common.Agent, BaseURL: marketBaseURL}

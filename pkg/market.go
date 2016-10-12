@@ -31,10 +31,14 @@ type Market struct {
 	Plans []Plan `json:"plans"`
 }
 
-func (agent *MarketAgent) Get(id string) (*Plan, error) {
+func (agent *MarketAgent) Get(r *http.Request, id string) (*Plan, error) {
 	// market := fakeMarket()
 
 	urlStr := fmt.Sprintf("/charge/v1/plans/%v", id)
+
+	if r.URL.RawQuery != "" {
+		urlStr += "?" + r.URL.RawQuery
+	}
 
 	rel, err := url.Parse(urlStr)
 	if err != nil {

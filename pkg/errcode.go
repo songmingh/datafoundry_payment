@@ -9,11 +9,13 @@ const (
 	ErrCodeBadRequest         = 1400
 	ErrCodeActionNotSupport   = 14003
 	ErrCodeInvalidToken       = 14004
+	ErrCodeUnauthorized       = 1401
 	ErrCodeForbidden          = 1403
 	ErrCodePermissionDenied   = 14030
 	ErrCodeNotFound           = 1404
 	ErrCodePlanNotFound       = 14040
 	ErrCodeMethodNotAllowed   = 1405
+	ErrCodeTimeout            = 1408
 	ErrCodeServiceUnavailable = 1503
 
 	ErrCodeUnknownError = 140010
@@ -24,11 +26,13 @@ var errText = map[int]string{
 	ErrCodeBadRequest:         "Bad request",
 	ErrCodeActionNotSupport:   "Not supported action",
 	ErrCodeInvalidToken:       "Invalid token",
+	ErrCodeUnauthorized:       "Unauthorized",
 	ErrCodeForbidden:          "Forbidden",
 	ErrCodePermissionDenied:   "Permission denied",
 	ErrCodeNotFound:           "Not found",
 	ErrCodePlanNotFound:       "No such plan",
 	ErrCodeMethodNotAllowed:   "Method not allowed",
+	ErrCodeTimeout:            "Request timeout",
 	ErrCodeServiceUnavailable: "Service unavailable",
 
 	ErrCodeUnknownError: "Unknown error",

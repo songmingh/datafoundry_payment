@@ -66,9 +66,9 @@ func (agent *CheckoutAgent) ListOrders(r *http.Request) (*[]apiPurchaseOrder, er
 
 }
 
-func (agent *CheckoutAgent) Create(checkout *Checkout) (*Checkout, error) {
+func (agent *CheckoutAgent) Create(r *http.Request, checkout *Checkout) (*Checkout, error) {
 	urlStr := "/usageapi/v1/orders"
-	plan, err := agent.Market.Get(checkout.PlanId)
+	plan, err := agent.Market.Get(r, checkout.PlanId)
 
 	if err != nil {
 		clog.Error(err)
