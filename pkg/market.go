@@ -121,6 +121,7 @@ func (agent *MarketAgent) List(r *http.Request) (*Market, error) {
 				PlanId:       result.Plan_id,
 				Name:         result.Name,
 				Type:         result.Plan_type,
+				Level:        result.Level,
 				Price:        result.Price,
 				BillPeriod:   result.Cycle,
 				Region:       result.Region,

@@ -39,17 +39,40 @@ func (agent *AccountAgent) Get(r *http.Request) (*Account, error) {
 
 		if len(*orders) > 0 {
 			account.Purchased = true
-			for _, order := range *orders {
-				if plan, err := agent.Market.Get(r, order.Plan_id); err != nil {
-					clog.Error(err)
-				} else {
-					if plan.PlanId != "" {
-						account.Plans = append(account.Plans, *plan)
-					} else {
-						clog.Warn("empty plan id ...", plan)
+
+			if plans, err := agent.Market.List(r); err != nil {
+				clog.Error(err)
+			} else {
+				func() {
+					for _, order := range *orders {
+						found := false
+						for _, plan := range plans.Plans {
+							if order.Plan_id == plan.PlanId {
+								account.Plans = append(account.Plans, plan)
+								clog.Debug(order.Plan_id, "found in plan list.")
+								found = true
+								break
+							}
+						}
+						if !found {
+							clog.Warnf("order with plan id '%v' not found in market.", order.Plan_id)
+						}
 					}
-				}
+
+				}()
 			}
+
+			// for _, order := range *orders {
+			// 	if plan, err := agent.Market.Get(r, order.Plan_id); err != nil {
+			// 		clog.Error(err)
+			// 	} else {
+			// 		if plan.PlanId != "" {
+			// 			account.Plans = append(account.Plans, *plan)
+			// 		} else {
+			// 			clog.Warn("empty plan id ...", plan)
+			// 		}
+			// 	}
+			// }
 		}
 
 	}
