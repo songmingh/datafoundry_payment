@@ -27,3 +27,14 @@ func Recharge(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		api.RespOK(w, balance)
 	}
 }
+
+func Notification(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
+
+	agent := api.Agent()
+	if err := agent.Recharge.Notification(r); err != nil {
+		api.RespError(w, err)
+	} else {
+		api.RespOK(w, nil)
+	}
+}
