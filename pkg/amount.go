@@ -17,9 +17,10 @@ type Amount struct {
 	Id           string  `json:"trans_id"`
 	CreationTime string  `json:"creation_time"`
 	Amount       float64 `json:"amount"`
+	User         string  `json:"user"`
 	Desc         string  `json:"description"`
 	Payment      string  `json:"payment_method"`
-	Comment      string  `json:"comment"`
+	Reason       string  `json:"reason"`
 	Namespace    string  `json:"namespace"`
 	Status       string  `json:"status"`
 }
@@ -37,6 +38,7 @@ func (agent *AmountAgent) Get(r *http.Request, tid string) (*Amount, error) {
 		clog.Error(err)
 		return nil, err
 	}
+	clog.Debug(amount)
 	return amount, nil
 }
 
@@ -57,12 +59,15 @@ func (agent *AmountAgent) List(r *http.Request) (*Amounts, error) {
 				CreationTime: transaction.CreateTime,
 				Amount:       transaction.Amount,
 				Desc:         transaction.Type,
+				User:         transaction.User,
+				Reason:       transaction.Reason,
 				Namespace:    transaction.Namespace,
 				Status:       transaction.Status,
 			}
 			amounts.Amounts = append(amounts.Amounts, amount)
 		}
 	}
+
 	return amounts, nil
 }
 

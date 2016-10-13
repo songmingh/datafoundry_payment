@@ -65,6 +65,7 @@ type apiTransaction struct {
 	Amount        float64 `json:"amount"`
 	Namespace     string  `json:"namespace"`
 	User          string  `json:"user,omitempty"`
+	Reason        string  `json:"reason,omitempty"`
 	CreateTime    string  `json:"createtime,omitempty"`
 	Status        string  `json:"status,omitempty"`
 	StatusTime    string  `json:"statustime,omitempty"`

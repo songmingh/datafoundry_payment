@@ -60,6 +60,8 @@ func doRequest(agent AgentInterface, r *http.Request, method, urlStr string, req
 		return err
 	}
 
+	clog.Debug(string(response.Data))
+
 	if err := json.Unmarshal([]byte(response.Data), respBody); err != nil {
 		clog.Error(err)
 		return err
@@ -101,6 +103,8 @@ func doRequestList(agent AgentInterface, r *http.Request, method, urlStr string,
 	if err := client.Do(req, response); err != nil {
 		return err
 	}
+
+	clog.Debug(string(response.Data))
 
 	if err := json.Unmarshal([]byte(response.Data), respListBody); err != nil {
 		clog.Error(err)
