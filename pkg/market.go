@@ -67,16 +67,7 @@ func (agent *MarketAgent) Get(r *http.Request, id string) (*Plan, error) {
 		return nil, err
 	} else {
 		clog.Infof("%#v", apiplan)
-		plan.PlanId = apiplan.Plan_id
-		plan.Name = apiplan.Name
-		plan.Level = apiplan.Level
-		plan.Type = apiplan.Plan_type
-		plan.Price = apiplan.Price
-		plan.BillPeriod = apiplan.Cycle
-		plan.Region = apiplan.Region
-		plan.Desc = apiplan.Spec1
-		plan.Desc2 = apiplan.Spec2
-		plan.CreationTime = apiplan.Create_time
+		plan = convertPlan(apiplan)
 	}
 
 	return plan, nil
@@ -116,22 +107,29 @@ func (agent *MarketAgent) List(r *http.Request) (*Market, error) {
 		clog.Error(err)
 		return nil, err
 	} else {
-		for _, result := range plans {
-			plan := Plan{
-				PlanId:       result.Plan_id,
-				Name:         result.Name,
-				Type:         result.Plan_type,
-				Level:        result.Level,
-				Price:        result.Price,
-				BillPeriod:   result.Cycle,
-				Region:       result.Region,
-				Desc:         result.Spec1,
-				Desc2:        result.Spec2,
-				CreationTime: result.Create_time,
-			}
-			market.Plans = append(market.Plans, plan)
+		for _, apiplan := range plans {
+			plan := convertPlan(&apiplan)
+			market.Plans = append(market.Plans, *plan)
 		}
 	}
 
 	return market, nil
+}
+
+func convertPlan(apiplan *apiPlan) *Plan {
+	plan := new(Plan)
+
+	plan.PlanId = apiplan.Plan_id
+	plan.Name = apiplan.Name
+	plan.Level = apiplan.Level
+	plan.Type = apiplan.Plan_type
+	plan.Price = apiplan.Price
+	plan.BillPeriod = apiplan.Cycle
+	plan.Region = apiplan.Region
+	plan.Desc = apiplan.Spec1
+	plan.Desc2 = apiplan.Spec2
+	plan.CreationTime = apiplan.Create_time
+
+	return plan
+
 }
