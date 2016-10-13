@@ -15,17 +15,17 @@ type RechargeAgent struct {
 }
 
 type Recharge struct {
-	Amount  float32 `json:"amount"`
+	Amount  float64 `json:"amount"`
 	Project string  `json:"namespace,omitempty"`
 }
 
-func (*RechargeAgent) Get() *Balance {
-	balance := &Balance{
-		Balance: 6000.89,
-		Status:  "active",
-	}
-	return balance
-}
+// func (*RechargeAgent) Get() *Balance {
+// 	balance := &Balance{
+// 		Balance: 6000.89,
+// 		Status:  "active",
+// 	}
+// 	return balance
+// }
 
 func (agent *RechargeAgent) Create(r *http.Request, recharge *Recharge) (*Balance, error) {
 
