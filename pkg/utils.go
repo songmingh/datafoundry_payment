@@ -68,7 +68,7 @@ func doRequest(agent AgentInterface, r *http.Request, method, urlStr string, req
 	return nil
 }
 
-func doRequestList(agent AgentInterface, r *http.Request, method, urlStr string, reqBody, respBody interface{}) error {
+func doRequestList(agent AgentInterface, r *http.Request, method, urlStr string, reqBody, respListBody interface{}) error {
 	baseURL := agent.Url()
 	client := agent.Instance()
 
@@ -102,7 +102,7 @@ func doRequestList(agent AgentInterface, r *http.Request, method, urlStr string,
 		return err
 	}
 
-	if err := json.Unmarshal([]byte(response.Data), respBody); err != nil {
+	if err := json.Unmarshal([]byte(response.Data), respListBody); err != nil {
 		clog.Error(err)
 		return err
 	}

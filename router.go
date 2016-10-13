@@ -27,6 +27,7 @@ func createRouter() *httprouter.Router {
 	router.GET(PATHPREFIX+"/amounts/:tid", amount.Amount)
 	router.GET(PATHPREFIX+"/account", account.Account)
 	router.GET(PATHPREFIX+"/coupon", coupon.Coupon)
+	router.GET(PATHPREFIX+"/orders", checkout.Order)
 
 	router.NotFound = &api.Mux{}
 

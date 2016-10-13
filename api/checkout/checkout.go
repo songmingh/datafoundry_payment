@@ -23,12 +23,26 @@ func Checkout(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	agent := api.Agent()
 
 	checkoutResult, err := agent.Checkout.Create(r, checkout)
-	if err != nil {
-		//clog.Error(err)
-		api.RespError(w, err)
-		return
-	}
 
-	api.RespOK(w, checkoutResult)
+	if err != nil {
+		api.RespError(w, err)
+	} else {
+		api.RespOK(w, checkoutResult)
+	}
+	//http.Redirect(w, r, "http://www.google.com", http.StatusMovedPermanently)
+}
+
+func Order(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
+
+	agent := api.Agent()
+
+	orders, err := agent.Checkout.ListOrders(r)
+
+	if err != nil {
+		api.RespError(w, err)
+	} else {
+		api.RespOK(w, orders)
+	}
 	//http.Redirect(w, r, "http://www.google.com", http.StatusMovedPermanently)
 }
