@@ -12,9 +12,13 @@ func Account(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
 	agent := api.Agent()
-	account := agent.Account.Get(r)
+	account, err := agent.Account.Get(r)
 
-	api.RespOK(w, account)
+	if err != nil {
+		api.RespError(w, err)
+	} else {
+		api.RespOK(w, account)
+	}
 
 	return
 }

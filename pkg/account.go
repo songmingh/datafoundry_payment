@@ -16,18 +16,24 @@ type Account struct {
 	Balance   Balance `json:"balance"`
 }
 
-func (agent *AccountAgent) Get(r *http.Request) *Account {
+func (agent *AccountAgent) Get(r *http.Request) (*Account, error) {
 	r.ParseForm()
 
 	project := r.FormValue("project")
 
 	clog.Debug(project)
 
+	_, err := getToken(r)
+	if err != nil {
+		clog.Error(err)
+		return nil, err
+	}
+
 	account := new(Account)
 
 	if orders, err := agent.Checkout.ListOrders(r); err != nil {
 		clog.Error(err)
-		return account
+		return nil, err
 	} else {
 		//clog.Debugf("%#v", orders)
 
@@ -49,5 +55,5 @@ func (agent *AccountAgent) Get(r *http.Request) *Account {
 	}
 
 	//account := fakeAccount(r)
-	return account
+	return account, nil
 }
