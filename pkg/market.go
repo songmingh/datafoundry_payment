@@ -25,6 +25,7 @@ type Plan struct {
 	Desc         string  `json:"description"`
 	Desc2        string  `json:"description2,omitempty"`
 	Region       string  `json:"region,omitempty"`
+	RegionID     string  `json:"region_id,omitempty"`
 	CreationTime string  `json:"creation_time,omitempty"`
 }
 
@@ -119,16 +120,17 @@ func (agent *MarketAgent) List(r *http.Request) (*Market, error) {
 func convertPlan(apiplan *apiPlan) *Plan {
 	plan := new(Plan)
 
-	plan.PlanId = apiplan.Plan_id
+	plan.PlanId = apiplan.PlanId
 	plan.Name = apiplan.Name
 	plan.Level = apiplan.Level
-	plan.Type = apiplan.Plan_type
+	plan.Type = apiplan.PlanType
 	plan.Price = apiplan.Price
 	plan.BillPeriod = apiplan.Cycle
-	plan.Region = apiplan.Region
+	plan.RegionID = apiplan.Region
+	plan.Region = apiplan.RegionDesc
 	plan.Desc = apiplan.Spec1
 	plan.Desc2 = apiplan.Spec2
-	plan.CreationTime = apiplan.Create_time
+	plan.CreationTime = apiplan.CreateTime
 
 	return plan
 
