@@ -41,7 +41,7 @@ func (agent *RechargeAgent) Create(r *http.Request, recharge *Recharge) (*HongPa
 
 		return nil, err
 	}
-	clog.Debug(hongpay.Packet)
+	clog.Debug(hongpay.Payloads)
 	return hongpay, nil
 
 }
