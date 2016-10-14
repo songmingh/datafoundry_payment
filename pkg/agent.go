@@ -9,13 +9,14 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"sync"
 
 	"github.com/zonesan/clog"
 )
 
-const (
+var (
 	// defaultBaseURL = "http://localhost:7071"
 
 	// BaseURL should always be specified WITHOUT a trailing slash.
@@ -25,6 +26,44 @@ const (
 	defaultRechargeBaseURL = defaultBalanceBaseURL
 	defaultAmountBaseURL   = defaultBalanceBaseURL
 )
+
+func InitBaseUrls() {
+	marketurl := combainHostPort("ENV_MARKET_HOST", "ENV_MARKET_PORT")
+
+	if len(marketurl) > 0 {
+		defaultMarketBaseURL = marketurl
+	}
+
+	checkouturl := combainHostPort("ENV_CHECKOUT_HOST", "ENV_CHECKOUT_PORT")
+
+	if len(checkouturl) > 0 {
+		defaultCheckoutBaseURL = checkouturl
+	}
+
+	balanceurl := combainHostPort("ENV_BALANCE_HOST", "ENV_BALANCE_PORT")
+
+	if len(balanceurl) > 0 {
+		defaultBalanceBaseURL = balanceurl
+		defaultRechargeBaseURL = defaultBalanceBaseURL
+		defaultAmountBaseURL = defaultBalanceBaseURL
+	}
+
+	clog.Debug(defaultMarketBaseURL)
+	clog.Debug(defaultCheckoutBaseURL)
+	clog.Debug(defaultBalanceBaseURL)
+	clog.Debug(defaultRechargeBaseURL)
+	clog.Debug(defaultAmountBaseURL)
+
+}
+
+func combainHostPort(hostenv, portenv string) string {
+	host := os.Getenv(os.Getenv(hostenv))
+	port := os.Getenv(os.Getenv(portenv))
+	if port == "" {
+		return host
+	}
+	return host + ":" + port
+}
 
 // An Agent manages communication with the payment components API.
 type Agent struct {
@@ -215,4 +254,8 @@ func CheckResponse(r *http.Response) error {
 		json.Unmarshal(data, errorResponse)
 	}
 	return errorResponse
+}
+
+func init() {
+	InitBaseUrls()
 }

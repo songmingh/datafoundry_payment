@@ -120,7 +120,8 @@ func httpAddr(addr string) string {
 		addr = strings.TrimRight(addr, "/")
 	}
 
-	if !strings.HasPrefix(addr, "http://") {
+	if !strings.HasPrefix(strings.ToLower(addr), "http://") &&
+		!strings.HasPrefix(strings.ToLower(addr), "https://") {
 		return fmt.Sprintf("http://%s", addr)
 	}
 
