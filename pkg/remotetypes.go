@@ -70,3 +70,15 @@ type apiTransaction struct {
 	Status        string  `json:"status,omitempty"`
 	StatusTime    string  `json:"statustime,omitempty"`
 }
+
+type apiRechargePayload struct {
+	AiPayUrl string    `json:"aiurl"`
+	Method   string    `json:"method,omitempty"`
+	Payloads []Payload `json:"payloads,omitempty"`
+	Packet   string    `json:"requestpacket,omitempty"`
+}
+
+type Payload struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}

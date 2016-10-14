@@ -2,7 +2,8 @@ package pkg
 
 import (
 	"encoding/json"
-	"io"
+	// "io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 
@@ -15,9 +16,11 @@ type RechargeAgent struct {
 }
 
 type Recharge struct {
-	Amount  float64 `json:"amount"`
+	Amount  float64 `json:"amount,omitempty"`
 	Project string  `json:"namespace,omitempty"`
 }
+
+type HongPay apiRechargePayload
 
 // func (*RechargeAgent) Get() *Balance {
 // 	balance := &Balance{
@@ -27,25 +30,25 @@ type Recharge struct {
 // 	return balance
 // }
 
-func (agent *RechargeAgent) Create(r *http.Request, recharge *Recharge) (*Balance, error) {
+func (agent *RechargeAgent) Create(r *http.Request, recharge *Recharge) (*HongPay, error) {
 
 	urlStr := "/charge/v1/recharge"
 
-	balance := new(Balance)
+	hongpay := new(HongPay)
 
-	if err := doRequest(agent, r, "POST", urlStr, recharge, balance); err != nil {
+	if err := doRequest(agent, r, "POST", urlStr, recharge, hongpay); err != nil {
 		clog.Error(err)
 
 		return nil, err
 	}
-
-	return balance, nil
+	clog.Debug(hongpay.Packet)
+	return hongpay, nil
 
 }
 
 func (agent *RechargeAgent) Notification(r *http.Request) error {
 	urlStr := "/charge/v1/aipaycallback"
-	var reqbody interface{}
+	var reqbody json.RawMessage
 
 	if r.URL.RawQuery != "" {
 		urlStr += "?" + r.URL.RawQuery
@@ -58,15 +61,29 @@ func (agent *RechargeAgent) Notification(r *http.Request) error {
 
 	u := agent.BaseURL.ResolveReference(rel)
 
-	err = json.NewDecoder(r.Body).Decode(reqbody)
-	if err == io.EOF {
-		err = nil // ignore EOF errors caused by empty response body
-	} else {
+	// err = json.NewDecoder(r.Body).Decode(reqbody)
+	// if err == io.EOF {
+	// 	clog.Warn("empty request body....")
+	// 	err = nil // ignore EOF errors caused by empty response body
+	// } else {
+	// 	clog.Error(err)
+	// 	return err
+	// }
+
+	b, err := ioutil.ReadAll(r.Body)
+	defer r.Body.Close()
+	if err != nil {
+		return err
+	}
+	clog.Debug("Request Body:", string(b))
+	if err := json.Unmarshal(b, &reqbody); err != nil {
+		clog.Error(err)
 		return err
 	}
 
 	req, err := agent.NewRequest("POST", u.String(), reqbody)
 	if err != nil {
+		clog.Error(err)
 		return err
 	}
 

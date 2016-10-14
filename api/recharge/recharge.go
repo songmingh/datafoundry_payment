@@ -21,10 +21,10 @@ func Recharge(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 
 	agent := api.Agent()
-	if balance, err := agent.Recharge.Create(r, recharge); err != nil {
+	if hongpay, err := agent.Recharge.Create(r, recharge); err != nil {
 		api.RespError(w, err)
 	} else {
-		api.RespOK(w, balance)
+		api.RespOK(w, hongpay)
 	}
 }
 

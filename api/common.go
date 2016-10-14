@@ -67,7 +67,7 @@ func genRespJson(err error) *APIResponse {
 			resp.Message = e.Message
 			resp.status = e.Response.StatusCode
 		} else {
-			resp.Code = payment.ErrCodeTimeout
+			resp.Code = payment.ErrCodeBadRequest
 			resp.Message = err.Error()
 			resp.status = trickCode2Status(resp.Code) //http.StatusBadRequest
 		}
