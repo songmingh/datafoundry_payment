@@ -2,8 +2,8 @@ package pkg
 
 import (
 	"encoding/json"
-	// "io"
-	"io/ioutil"
+	"io"
+	// "io/ioutil"
 	"net/http"
 	"net/url"
 
@@ -48,7 +48,7 @@ func (agent *RechargeAgent) Create(r *http.Request, recharge *Recharge) (*HongPa
 
 func (agent *RechargeAgent) Notification(r *http.Request) error {
 	urlStr := "/charge/v1/aipaycallback"
-	var reqbody json.RawMessage
+	reqbody := new(json.RawMessage)
 
 	if r.URL.RawQuery != "" {
 		urlStr += "?" + r.URL.RawQuery
@@ -61,25 +61,27 @@ func (agent *RechargeAgent) Notification(r *http.Request) error {
 
 	u := agent.BaseURL.ResolveReference(rel)
 
-	// err = json.NewDecoder(r.Body).Decode(reqbody)
-	// if err == io.EOF {
-	// 	clog.Warn("empty request body....")
-	// 	err = nil // ignore EOF errors caused by empty response body
-	// } else {
+	err = json.NewDecoder(r.Body).Decode(reqbody)
+	if err == io.EOF {
+		clog.Warn("empty request body....")
+		err = nil // ignore EOF errors caused by empty response body
+	} else {
+		if err != nil {
+			clog.Error(err)
+			return err
+		}
+	}
+
+	// b, err := ioutil.ReadAll(r.Body)
+	// defer r.Body.Close()
+	// if err != nil {
+	// 	return err
+	// }
+	// clog.Debug("Request Body:", string(b))
+	// if err := json.Unmarshal(b, &reqbody); err != nil {
 	// 	clog.Error(err)
 	// 	return err
 	// }
-
-	b, err := ioutil.ReadAll(r.Body)
-	defer r.Body.Close()
-	if err != nil {
-		return err
-	}
-	clog.Debug("Request Body:", string(b))
-	if err := json.Unmarshal(b, &reqbody); err != nil {
-		clog.Error(err)
-		return err
-	}
 
 	req, err := agent.NewRequest("POST", u.String(), reqbody)
 	if err != nil {
