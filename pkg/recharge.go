@@ -1,9 +1,9 @@
 package pkg
 
 import (
-	"encoding/json"
+	"bytes"
 	"io"
-	// "io/ioutil"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 
@@ -22,14 +22,6 @@ type Recharge struct {
 
 type HongPay apiRechargePayload
 
-// func (*RechargeAgent) Get() *Balance {
-// 	balance := &Balance{
-// 		Balance: 6000.89,
-// 		Status:  "active",
-// 	}
-// 	return balance
-// }
-
 func (agent *RechargeAgent) Create(r *http.Request, recharge *Recharge) (*HongPay, error) {
 
 	urlStr := "/charge/v1/recharge"
@@ -46,9 +38,8 @@ func (agent *RechargeAgent) Create(r *http.Request, recharge *Recharge) (*HongPa
 
 }
 
-func (agent *RechargeAgent) Notification(r *http.Request) error {
+func (agent *RechargeAgent) Notification(r *http.Request) ([]byte, error) {
 	urlStr := "/charge/v1/aipaycallback"
-	reqbody := new(json.RawMessage)
 
 	if r.URL.RawQuery != "" {
 		urlStr += "?" + r.URL.RawQuery
@@ -56,46 +47,43 @@ func (agent *RechargeAgent) Notification(r *http.Request) error {
 
 	rel, err := url.Parse(urlStr)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	u := agent.BaseURL.ResolveReference(rel)
 
-	err = json.NewDecoder(r.Body).Decode(reqbody)
-	if err == io.EOF {
-		clog.Warn("empty request body....")
-		err = nil // ignore EOF errors caused by empty response body
-	} else {
-		if err != nil {
-			clog.Error(err)
-			return err
-		}
+	reqbody, err := ioutil.ReadAll(r.Body)
+	defer r.Body.Close()
+
+	if err != nil {
+		return nil, err
 	}
 
-	// b, err := ioutil.ReadAll(r.Body)
-	// defer r.Body.Close()
-	// if err != nil {
-	// 	return err
-	// }
-	// clog.Debug("Request Body:", string(b))
-	// if err := json.Unmarshal(b, &reqbody); err != nil {
-	// 	clog.Error(err)
-	// 	return err
-	// }
+	clog.Debug("Request Body:", string(reqbody))
 
-	req, err := agent.NewRequest("POST", u.String(), reqbody)
+	req, err := http.NewRequest("POST", u.String(), bytes.NewBuffer(reqbody))
 	if err != nil {
 		clog.Error(err)
-		return err
+		return nil, err
 	}
 
-	response := new(RemoteResponse)
-
-	if err := agent.Do(req, response); err != nil {
-		return err
+	resp, err := agent.client.Do(req)
+	if err != nil {
+		return nil, err
 	}
 
-	return nil
+	defer func() {
+		// Drain up to 512 bytes and close the body to let the Transport reuse the connection
+		io.CopyN(ioutil.Discard, resp.Body, 512)
+		resp.Body.Close()
+	}()
+
+	data, err := ioutil.ReadAll(resp.Body)
+
+	clog.Debugf("%s", data)
+
+	return data, err
+
 }
 
 func (agent *RechargeAgent) Url() *url.URL {

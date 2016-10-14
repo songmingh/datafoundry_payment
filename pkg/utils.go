@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -112,4 +113,16 @@ func doRequestList(agent AgentInterface, r *http.Request, method, urlStr string,
 	}
 
 	return nil
+}
+
+func httpAddr(addr string) string {
+	if strings.HasSuffix(addr, "/") {
+		addr = strings.TrimRight(addr, "/")
+	}
+
+	if !strings.HasPrefix(addr, "http://") {
+		return fmt.Sprintf("http://%s", addr)
+	}
+
+	return addr
 }
