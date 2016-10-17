@@ -19,7 +19,7 @@ type Account struct {
 func (agent *AccountAgent) Get(r *http.Request) (*Account, error) {
 	r.ParseForm()
 
-	project := r.FormValue("project")
+	project := r.FormValue("namespace")
 
 	clog.Debug(project)
 

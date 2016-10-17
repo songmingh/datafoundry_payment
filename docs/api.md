@@ -1,4 +1,4 @@
-GET /payment/v1/account?project=chaizs-org
+GET /payment/v1/account?namespace=hello-org
 
 {
   "purchased": false,
@@ -65,7 +65,7 @@ POST /payment/v1/recharge -d '{"amount":1234.34,namespace:"chaizs"}'
   "status": "active"
 }
 
-GET /payment/v1/amount
+GET /payment/v1/amounts?namespace=hello
 [
   {
     "trans_id": "03Fwerqe2",
@@ -93,7 +93,7 @@ GET /payment/v1/amount
   }
 ]
 
-GET /payment/v1/amount/we
+GET /payment/v1/amount/we?namespace=hello
 
 {
   "trans_id": "03F232X238DKJ",
@@ -104,7 +104,7 @@ GET /payment/v1/amount/we
   "status": "finish"
 }
 
-GET /payment/v1/balance
+GET /payment/v1/balance?namespace=hello
 
 {
   "balance": 50000.89,
