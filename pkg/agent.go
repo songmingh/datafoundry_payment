@@ -48,11 +48,11 @@ func InitBaseUrls() {
 		defaultAmountBaseURL = defaultBalanceBaseURL
 	}
 
-	clog.Debug(defaultMarketBaseURL)
-	clog.Debug(defaultCheckoutBaseURL)
-	clog.Debug(defaultBalanceBaseURL)
-	clog.Debug(defaultRechargeBaseURL)
-	clog.Debug(defaultAmountBaseURL)
+	clog.Debug("marketurl", defaultMarketBaseURL)
+	clog.Debug("checkouturl", defaultCheckoutBaseURL)
+	clog.Debug("balanceurl", defaultBalanceBaseURL)
+	clog.Debug("rechargeurl", defaultRechargeBaseURL)
+	clog.Debug("amounturl", defaultAmountBaseURL)
 
 }
 
