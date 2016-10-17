@@ -100,7 +100,9 @@ func (agent *CheckoutAgent) Create(r *http.Request, checkout *Checkout) (*Purcha
 }
 
 func (agent *CheckoutAgent) Url() *url.URL {
-	return agent.BaseURL
+	u := new(url.URL)
+	u, _ = url.Parse(httpAddr(agent.BaseURL.String()))
+	return u
 }
 
 func (agent *CheckoutAgent) Instance() *Agent {

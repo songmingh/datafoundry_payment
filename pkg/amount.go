@@ -72,7 +72,9 @@ func (agent *AmountAgent) List(r *http.Request) (*Amounts, error) {
 }
 
 func (agent *AmountAgent) Url() *url.URL {
-	return agent.BaseURL
+	u := new(url.URL)
+	u, _ = url.Parse(httpAddr(agent.BaseURL.String()))
+	return u
 }
 
 func (agent *AmountAgent) Instance() *Agent {

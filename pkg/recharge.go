@@ -87,7 +87,9 @@ func (agent *RechargeAgent) Notification(r *http.Request) ([]byte, error) {
 }
 
 func (agent *RechargeAgent) Url() *url.URL {
-	return agent.BaseURL
+	u := new(url.URL)
+	u, _ = url.Parse(httpAddr(agent.BaseURL.String()))
+	return u
 }
 
 func (agent *RechargeAgent) Instance() *Agent {
