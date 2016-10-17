@@ -31,19 +31,19 @@ func InitBaseUrls() {
 	marketurl := combainHostPort("ENV_MARKET_HOST", "ENV_MARKET_PORT")
 
 	if len(marketurl) > 0 {
-		defaultMarketBaseURL = marketurl
+		defaultMarketBaseURL = httpAddr(marketurl)
 	}
 
 	checkouturl := combainHostPort("ENV_CHECKOUT_HOST", "ENV_CHECKOUT_PORT")
 
 	if len(checkouturl) > 0 {
-		defaultCheckoutBaseURL = checkouturl
+		defaultCheckoutBaseURL = httpAddr(checkouturl)
 	}
 
 	balanceurl := combainHostPort("ENV_BALANCE_HOST", "ENV_BALANCE_PORT")
 
 	if len(balanceurl) > 0 {
-		defaultBalanceBaseURL = balanceurl
+		defaultBalanceBaseURL = httpAddr(balanceurl)
 		defaultRechargeBaseURL = defaultBalanceBaseURL
 		defaultAmountBaseURL = defaultBalanceBaseURL
 	}
