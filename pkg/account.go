@@ -40,7 +40,7 @@ func (agent *AccountAgent) Get(r *http.Request) (*Account, error) {
 		if len(*orders) > 0 {
 			account.Purchased = true
 
-			if plans, err := agent.Market.List(r); err != nil {
+			if plans, err := agent.Market.ListPlan(r); err != nil {
 				clog.Error(err)
 			} else {
 				func() {

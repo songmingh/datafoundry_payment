@@ -33,6 +33,8 @@ type Market struct {
 	Plans []Plan `json:"plans"`
 }
 
+type Region apiRegion
+
 func (agent *MarketAgent) Get(r *http.Request, id string) (*Plan, error) {
 	// market := fakeMarket()
 
@@ -75,7 +77,7 @@ func (agent *MarketAgent) Get(r *http.Request, id string) (*Plan, error) {
 
 }
 
-func (agent *MarketAgent) List(r *http.Request) (*Market, error) {
+func (agent *MarketAgent) ListPlan(r *http.Request) (*Market, error) {
 	urlStr := "/charge/v1/plans"
 
 	if r.URL.RawQuery != "" {
@@ -115,6 +117,41 @@ func (agent *MarketAgent) List(r *http.Request) (*Market, error) {
 	}
 
 	return market, nil
+}
+
+func (agent *MarketAgent) ListRegion(r *http.Request) (*[]Region, error) {
+	urlStr := "/charge/v1/query/plans/region"
+
+	if r.URL.RawQuery != "" {
+		urlStr += "?" + r.URL.RawQuery
+	}
+
+	rel, err := url.Parse(urlStr)
+	if err != nil {
+		return nil, err
+	}
+
+	u := agent.BaseURL.ResolveReference(rel)
+
+	req, err := agent.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	response := new(RemoteListResponse)
+	if err := agent.Do(req, response); err != nil {
+		clog.Error(err)
+		return nil, err
+	}
+
+	regions := new([]Region)
+
+	if err := json.Unmarshal([]byte(response.Data), regions); err != nil {
+		clog.Error(err)
+		return nil, err
+	}
+
+	return regions, nil
 }
 
 func convertPlan(apiplan *apiPlan) *Plan {

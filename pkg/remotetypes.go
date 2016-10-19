@@ -83,3 +83,8 @@ type Payload struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
 }
+
+type apiRegion struct {
+	Id   string `json:"identification"`
+	Desc string `json:"region_describe"`
+}

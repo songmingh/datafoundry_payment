@@ -11,5 +11,6 @@ func main() {
 	router := createRouter()
 
 	//clog.SetLogLevel(clog.LOG_LEVEL_DEBUG)
+	clog.Info("listening on port 8080...")
 	clog.Fatal(http.ListenAndServe(":8080", router))
 }
