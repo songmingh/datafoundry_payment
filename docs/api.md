@@ -1,5 +1,6 @@
 GET /payment/v1/account?namespace=hello-org
 
+```json
 {
   "purchased": false,
   "notification": false,
@@ -17,9 +18,11 @@ GET /payment/v1/account?namespace=hello-org
     "balance": 0
   }
 }
+```
 
 GET /payment/v1/market?region=aws&type=c
 
+```json
 {
   "plans": [
     {
@@ -50,22 +53,27 @@ GET /payment/v1/market?region=aws&type=c
     }
   ]
 }
+```
 
 POST /payment/v1/checkout -d '{"plan_id":"zwwqe","namespace":"chaizs","region":"cn-north-1"}'
 
+```json
 {
   "balance": 3000.01,
   "status": "active"
 }
-
+```
 POST /payment/v1/recharge -d '{"amount":1234.34,namespace:"chaizs"}'
 
+```json
 {
   "balance": 6000.89,
   "status": "active"
 }
-
+```
 GET /payment/v1/amounts?namespace=hello
+
+```json
 [
   {
     "trans_id": "03Fwerqe2",
@@ -92,9 +100,10 @@ GET /payment/v1/amounts?namespace=hello
     "status": "refunded"
   }
 ]
-
+```
 GET /payment/v1/amount/we?namespace=hello
 
+```json
 {
   "trans_id": "03F232X238DKJ",
   "creation_time": "2016-09-26T17:30:04+08:00",
@@ -103,16 +112,18 @@ GET /payment/v1/amount/we?namespace=hello
   "payment_method": "balance",
   "status": "finish"
 }
-
+```
 GET /payment/v1/balance?namespace=hello
 
+```json
 {
   "balance": 50000.89,
   "status": "active"
 }
-
+```
 GET /payment/v1/regions
 
+```json
 [
   {
     "identification": "cn-north-1",
@@ -123,24 +134,27 @@ GET /payment/v1/regions
     "region_describe": "铸造二区"
   }
 ]
+```
 
 GET /payment/v1/coupon/xxeefd
 
+```json
 {
   "serial": "xxeefd",
   "amount": 10,
   "expire_on": "2017-01-01T00:00:00Z",
   "status": "available"
 }
-
+```
 POST /payment/v1/redeem -d  '{"serial":"xxeefd","code":"ssa","namespace":"chaizs","region":"cn-north-1"}'
 
+```json
 {
   "amount": 10,
   "namespace": "chaizs",
   "region": "cn-north-1"
 }
-
+```
 
 identification  jd
 region cn-north-1
