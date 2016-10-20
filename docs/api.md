@@ -156,8 +156,12 @@ POST /payment/v1/redeem -d  '{"serial":"xxeefd","code":"ssa","namespace":"chaizs
 }
 ```
 
-identification  jd
-region cn-north-1
-desc taocan 1
-comment
-status available
+  ** identification  jd
+
+  ** region cn-north-1
+
+  ** desc taocan 1
+
+  ** comment
+
+  ** status available
