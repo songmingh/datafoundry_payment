@@ -20,6 +20,7 @@ var (
 	// defaultBaseURL = "http://localhost:7071"
 
 	// BaseURL should always be specified WITHOUT a trailing slash.
+	defaultCouponBaseURL   = "https://datafoundry.coupon.app.dataos.io"
 	defaultMarketBaseURL   = "https://datafoundry.plan.app.dataos.io"
 	defaultCheckoutBaseURL = "https://datafoundry.serviceusage.app.dataos.io"
 	defaultBalanceBaseURL  = "https://datafoundry.recharge.app.dataos.io"
@@ -28,6 +29,12 @@ var (
 )
 
 func InitBaseUrls() {
+	couponurl := combainHostPort("ENV_COUPON_HOST", "ENV_COUPON_PORT")
+
+	if len(couponurl) > 0 {
+		defaultCouponBaseURL = httpAddr(couponurl)
+	}
+
 	marketurl := combainHostPort("ENV_MARKET_HOST", "ENV_MARKET_PORT")
 
 	if len(marketurl) > 0 {
@@ -48,6 +55,7 @@ func InitBaseUrls() {
 		defaultAmountBaseURL = defaultBalanceBaseURL
 	}
 
+	clog.Debug("couponurl", defaultCouponBaseURL)
 	clog.Debug("marketurl", defaultMarketBaseURL)
 	clog.Debug("checkouturl", defaultCheckoutBaseURL)
 	clog.Debug("balanceurl", defaultBalanceBaseURL)
@@ -107,6 +115,7 @@ func NewAgent(httpClient *http.Client) *Agent {
 	agent := &Agent{client: httpClient}
 
 	marketBaseURL, _ := url.Parse(defaultMarketBaseURL)
+	couponBaseURL, _ := url.Parse(defaultCouponBaseURL)
 	checkoutBaseURL, _ := url.Parse(defaultCheckoutBaseURL)
 	balanceBaseURL, _ := url.Parse(defaultBalanceBaseURL)
 	rechargeBaeURL, _ := url.Parse(defaultRechargeBaseURL)
@@ -119,7 +128,7 @@ func NewAgent(httpClient *http.Client) *Agent {
 	agent.Amount = &AmountAgent{Agent: agent.common.Agent, BaseURL: amountBaeURL}
 	agent.Balance = &BalanceAgent{Agent: agent.common.Agent, BaseURL: balanceBaseURL}
 	agent.Checkout = &CheckoutAgent{Agent: agent.common.Agent, BaseURL: checkoutBaseURL}
-	agent.Coupon = (*CouponAgent)(agent.common)
+	agent.Coupon = &CouponAgent{Agent: agent.common.Agent, BaseURL: couponBaseURL}
 	agent.Market = &MarketAgent{Agent: agent.common.Agent, BaseURL: marketBaseURL}
 	agent.Recharge = &RechargeAgent{Agent: agent.common.Agent, BaseURL: rechargeBaeURL}
 

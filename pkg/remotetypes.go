@@ -88,3 +88,12 @@ type apiRegion struct {
 	Id   string `json:"identification"`
 	Desc string `json:"region_describe"`
 }
+
+type apiCoupon struct {
+	SerialNumber string  `json:"serial,omitempty"`
+	Amount       float64 `json:"amount,omitempty"`
+	ExpireOn     string  `json:"expire_on,omitempty"`
+	Status       string  `json:"status,omitempty"`
+	Region       string  `json:"region,omitempty"`
+	Namespace    string  `json:"namespace,omitempty"`
+}
