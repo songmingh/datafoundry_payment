@@ -111,6 +111,18 @@ GET /payment/v1/balance?namespace=hello
   "status": "active"
 }
 
+GET /payment/v1/regions
+
+[
+  {
+    "identification": "cn-north-1",
+    "region_describe": "铸造一区"
+  },
+  {
+    "identification": "cn-north-2",
+    "region_describe": "铸造二区"
+  }
+]
 
 
 identification  jd
