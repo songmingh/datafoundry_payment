@@ -124,6 +124,23 @@ GET /payment/v1/regions
   }
 ]
 
+GET /payment/v1/coupon/xxeefd
+
+{
+  "serial": "xxeefd",
+  "amount": 10,
+  "expire_on": "2017-01-01T00:00:00Z",
+  "status": "available"
+}
+
+POST /payment/v1/redeem -d  '{"serial":"xxeefd","code":"ssa","namespace":"chaizs","region":"cn-north-1"}'
+
+{
+  "amount": 10,
+  "namespace": "chaizs",
+  "region": "cn-north-1"
+}
+
 
 identification  jd
 region cn-north-1
