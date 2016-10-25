@@ -41,7 +41,7 @@ func (agent *CouponAgent) Redeem(r *http.Request, redeem *Redeem) (*Coupon, erro
 		return nil, ErrorNew(ErrCodeBadRequest)
 	}
 
-	urlStr := fmt.Sprintf("/charge/v1/coupons/%v", redeem.Serial)
+	urlStr := fmt.Sprintf("/charge/v1/coupons/use/%s", redeem.Serial)
 
 	coupon := new(Coupon)
 	if err := doRequest(agent, r, "PUT", urlStr, redeem, coupon); err != nil {
