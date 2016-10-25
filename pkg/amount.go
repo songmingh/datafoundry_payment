@@ -14,15 +14,15 @@ type AmountAgent struct {
 }
 
 type Amount struct {
-	Id           string  `json:"trans_id"`
-	CreationTime string  `json:"creation_time"`
-	Amount       float64 `json:"amount"`
-	User         string  `json:"user"`
-	Desc         string  `json:"description"`
-	Payment      string  `json:"payment_method"`
-	Reason       string  `json:"reason"`
-	Namespace    string  `json:"namespace"`
-	Status       string  `json:"status"`
+	Id            string  `json:"trans_id"`
+	CreationTime  string  `json:"creation_time"`
+	Amount        float64 `json:"amount"`
+	User          string  `json:"user"`
+	Desc          string  `json:"description"`
+	PaymentMethod string  `json:"payment_method"`
+	Reason        string  `json:"reason"`
+	Namespace     string  `json:"namespace"`
+	Status        string  `json:"status"`
 }
 
 type Amounts struct {
@@ -55,14 +55,15 @@ func (agent *AmountAgent) List(r *http.Request) (*Amounts, error) {
 	} else {
 		for _, transaction := range transactions {
 			amount := Amount{
-				Id:           transaction.TransactionId,
-				CreationTime: transaction.CreateTime,
-				Amount:       transaction.Amount,
-				Desc:         transaction.Type,
-				User:         transaction.User,
-				Reason:       transaction.Reason,
-				Namespace:    transaction.Namespace,
-				Status:       transaction.Status,
+				Id:            transaction.TransactionId,
+				CreationTime:  transaction.CreateTime,
+				Amount:        transaction.Amount,
+				Desc:          transaction.Type,
+				User:          transaction.User,
+				Reason:        transaction.Reason,
+				Namespace:     transaction.Namespace,
+				PaymentMethod: transaction.PaymentMethod,
+				Status:        transaction.Status,
 			}
 			amounts.Amounts = append(amounts.Amounts, amount)
 		}

@@ -33,12 +33,12 @@ func fakeAccount(r *http.Request) *Account {
 func fakeAmount(r *http.Request) *Amount {
 
 	amount := &Amount{
-		Id:           "03F232X238DKJ",
-		CreationTime: time.Now().Format(time.RFC3339),
-		Amount:       12.23,
-		Desc:         "Plan A",
-		Payment:      "balance",
-		Status:       "finish",
+		Id:            "03F232X238DKJ",
+		CreationTime:  time.Now().Format(time.RFC3339),
+		Amount:        12.23,
+		Desc:          "Plan A",
+		PaymentMethod: "balance",
+		Status:        "finish",
 	}
 
 	r.ParseForm()
@@ -53,28 +53,28 @@ func fakeAmounts(r *http.Request) *[]Amount {
 
 	amounts := &[]Amount{
 		{
-			Id:           "03Fwerqe2",
-			CreationTime: time.Now().Format(time.RFC3339),
-			Amount:       12.23,
-			Desc:         "Plan A",
-			Payment:      "balance",
-			Status:       "finish",
+			Id:            "03Fwerqe2",
+			CreationTime:  time.Now().Format(time.RFC3339),
+			Amount:        12.23,
+			Desc:          "Plan A",
+			PaymentMethod: "balance",
+			Status:        "finish",
 		},
 		{
-			Id:           "qwer238DKJ",
-			CreationTime: time.Now().Format(time.RFC3339),
-			Amount:       12.23,
-			Desc:         "Plan A",
-			Payment:      "balance",
-			Status:       "finish",
+			Id:            "qwer238DKJ",
+			CreationTime:  time.Now().Format(time.RFC3339),
+			Amount:        12.23,
+			Desc:          "Plan A",
+			PaymentMethod: "balance",
+			Status:        "finish",
 		},
 		{
-			Id:           "03F232X238DKJ",
-			CreationTime: time.Now().Format(time.RFC3339),
-			Amount:       2.34,
-			Desc:         "Plan A",
-			Payment:      "balance",
-			Status:       "refunded",
+			Id:            "03F232X238DKJ",
+			CreationTime:  time.Now().Format(time.RFC3339),
+			Amount:        2.34,
+			Desc:          "Plan A",
+			PaymentMethod: "balance",
+			Status:        "refunded",
 		},
 	}
 

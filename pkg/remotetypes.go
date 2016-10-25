@@ -68,6 +68,7 @@ type apiTransaction struct {
 	User          string  `json:"user,omitempty"`
 	Reason        string  `json:"reason,omitempty"`
 	CreateTime    string  `json:"createtime,omitempty"`
+	PaymentMethod string  `json:"paymode"`
 	Status        string  `json:"status,omitempty"`
 	StatusTime    string  `json:"statustime,omitempty"`
 }
