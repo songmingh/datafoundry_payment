@@ -18,6 +18,7 @@ type Checkout struct {
 	Project string `json:"namespace,omitempty"`
 	Region  string `json:"region"` //need it?
 	OrderID string `json:"orderid,omitempty"`
+	DryTry  int    `json:"drytry,omitempty"`
 }
 
 type PurchasedOrder apiPurchaseOrder

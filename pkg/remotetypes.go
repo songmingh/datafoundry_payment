@@ -38,18 +38,21 @@ type apiPlan struct {
 }
 
 type apiPurchaseOrder struct {
-	Order_id        string `json:"order_id,omitempty"`
-	Account_id      string `json:"project,omitempty"` // accountId
-	Region          string `json:"region,omitempty"`
-	Plan_id         string `json:"plan_id,omitempty"`
-	Plan_type       string `json:"_,omitempty"`
-	Start_time      string `json:"start_time,omitempty"`
-	End_time        string `json:"_,omitempty"`        // po
-	EndTime         string `json:"end_time,omitempty"` // vo
-	Deadline_time   string `json:"deadline,omitempty"`
-	Last_consume_id int    `json:"_,omitempty"`
-	Status          string `json:"status,omitempty"`
-	Creator         string `json:"creator,omitempty"`
+	Money string `json:"money"`
+	Order struct {
+		Order_id        string `json:"order_id,omitempty"`
+		Account_id      string `json:"project,omitempty"` // accountId
+		Region          string `json:"region,omitempty"`
+		Plan_id         string `json:"plan_id,omitempty"`
+		Plan_type       string `json:"_,omitempty"`
+		Start_time      string `json:"start_time,omitempty"`
+		End_time        string `json:"_,omitempty"`        // po
+		EndTime         string `json:"end_time,omitempty"` // vo
+		Deadline_time   string `json:"deadline,omitempty"`
+		Last_consume_id int    `json:"_,omitempty"`
+		Status          string `json:"status,omitempty"`
+		Creator         string `json:"creator,omitempty"`
+	} `json:"order"`
 }
 
 type apiBalance struct {

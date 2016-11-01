@@ -47,15 +47,15 @@ func (agent *AccountAgent) Get(r *http.Request) (*Account, error) {
 					for _, order := range *orders {
 						found := false
 						for _, plan := range plans.Plans {
-							if order.Plan_id == plan.PlanId {
+							if order.Order.Plan_id == plan.PlanId {
 								account.Plans = append(account.Plans, plan)
-								clog.Debug(order.Plan_id, "found in plan list.")
+								clog.Debug(order.Order.Plan_id, "found in plan list.")
 								found = true
 								break
 							}
 						}
 						if !found {
-							clog.Warnf("order with plan id '%v' not found in market.", order.Plan_id)
+							clog.Warnf("order with plan id '%v' not found in market.", order.Order.Plan_id)
 						}
 					}
 
