@@ -41,7 +41,7 @@ type apiPurchaseOrder struct {
 	Money string `json:"money"`
 	Order struct {
 		Order_id        string `json:"order_id,omitempty"`
-		Account_id      string `json:"project,omitempty"` // accountId
+		Account_id      string `json:"namespace,omitempty"` // accountId
 		Region          string `json:"region,omitempty"`
 		Plan_id         string `json:"plan_id,omitempty"`
 		Plan_type       string `json:"_,omitempty"`
