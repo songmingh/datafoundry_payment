@@ -46,8 +46,11 @@ func ListItems(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 func GetItem(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
 
+	repo := ps.ByName("repo")
+	item := ps.ByName("item")
+
 	agent := api.Agent()
-	if resp, err := agent.Recharge.Notification(r); err != nil {
+	if resp, err := agent.Integration.GetItem(r, repo, item); err != nil {
 		api.RespError(w, err)
 	} else {
 		api.RespOK(w, resp)
