@@ -26,33 +26,35 @@ var (
 	defaultBalanceBaseURL  = "https://datafoundry.recharge.app.dataos.io"
 	defaultRechargeBaseURL = defaultBalanceBaseURL
 	defaultAmountBaseURL   = defaultBalanceBaseURL
+	defaultIntegrationURL  = "https://datafoundry.integration.app.dataos.io"
 )
 
 func InitBaseUrls() {
 	couponurl := combainHostPort("ENV_COUPON_HOST", "ENV_COUPON_PORT")
-
 	if len(couponurl) > 0 {
 		defaultCouponBaseURL = httpAddr(couponurl)
 	}
 
 	marketurl := combainHostPort("ENV_MARKET_HOST", "ENV_MARKET_PORT")
-
 	if len(marketurl) > 0 {
 		defaultMarketBaseURL = httpAddr(marketurl)
 	}
 
 	checkouturl := combainHostPort("ENV_CHECKOUT_HOST", "ENV_CHECKOUT_PORT")
-
 	if len(checkouturl) > 0 {
 		defaultCheckoutBaseURL = httpAddr(checkouturl)
 	}
 
 	balanceurl := combainHostPort("ENV_BALANCE_HOST", "ENV_BALANCE_PORT")
-
 	if len(balanceurl) > 0 {
 		defaultBalanceBaseURL = httpAddr(balanceurl)
 		defaultRechargeBaseURL = defaultBalanceBaseURL
 		defaultAmountBaseURL = defaultBalanceBaseURL
+	}
+
+	integrationurl := combainHostPort("ENV_INTEGRATION_HOST", "ENV_INTEGRATION_PORT")
+	if len(integrationurl) > 0 {
+		defaultIntegrationURL = httpAddr(integrationurl)
 	}
 
 	clog.Debug("couponurl", defaultCouponBaseURL)
@@ -61,6 +63,7 @@ func InitBaseUrls() {
 	clog.Debug("balanceurl", defaultBalanceBaseURL)
 	clog.Debug("rechargeurl", defaultRechargeBaseURL)
 	clog.Debug("amounturl", defaultAmountBaseURL)
+	clog.Debug("integrationurl", defaultIntegrationURL)
 
 }
 
