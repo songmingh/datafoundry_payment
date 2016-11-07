@@ -20,13 +20,13 @@ var (
 	// defaultBaseURL = "http://localhost:7071"
 
 	// BaseURL should always be specified WITHOUT a trailing slash.
-	defaultCouponBaseURL   = "https://datafoundry.coupon.app.dataos.io"
-	defaultMarketBaseURL   = "https://datafoundry.plan.app.dataos.io"
-	defaultCheckoutBaseURL = "https://datafoundry.serviceusage.app.dataos.io"
-	defaultBalanceBaseURL  = "https://datafoundry.recharge.app.dataos.io"
-	defaultRechargeBaseURL = defaultBalanceBaseURL
-	defaultAmountBaseURL   = defaultBalanceBaseURL
-	defaultIntegrationURL  = "https://datafoundry.integration.app.dataos.io"
+	defaultCouponBaseURL      = "https://datafoundry.coupon.app.dataos.io"
+	defaultMarketBaseURL      = "https://datafoundry.plan.app.dataos.io"
+	defaultCheckoutBaseURL    = "https://datafoundry.serviceusage.app.dataos.io"
+	defaultBalanceBaseURL     = "https://datafoundry.recharge.app.dataos.io"
+	defaultRechargeBaseURL    = defaultBalanceBaseURL
+	defaultAmountBaseURL      = defaultBalanceBaseURL
+	defaultIntegrationBaseURL = "https://datafoundry.integration.app.dataos.io"
 )
 
 func InitBaseUrls() {
@@ -54,7 +54,7 @@ func InitBaseUrls() {
 
 	integrationurl := combainHostPort("ENV_INTEGRATION_HOST", "ENV_INTEGRATION_PORT")
 	if len(integrationurl) > 0 {
-		defaultIntegrationURL = httpAddr(integrationurl)
+		defaultIntegrationBaseURL = httpAddr(integrationurl)
 	}
 
 	clog.Debug("couponurl", defaultCouponBaseURL)
@@ -63,7 +63,7 @@ func InitBaseUrls() {
 	clog.Debug("balanceurl", defaultBalanceBaseURL)
 	clog.Debug("rechargeurl", defaultRechargeBaseURL)
 	clog.Debug("amounturl", defaultAmountBaseURL)
-	clog.Debug("integrationurl", defaultIntegrationURL)
+	clog.Debug("integrationurl", defaultIntegrationBaseURL)
 
 }
 
@@ -89,13 +89,14 @@ type Agent struct {
 	common *service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// Agents used for talking to different parts of the payment components API.
-	Recharge *RechargeAgent
-	Checkout *CheckoutAgent
-	Balance  *BalanceAgent
-	Market   *MarketAgent
-	Amount   *AmountAgent
-	Account  *AccountAgent
-	Coupon   *CouponAgent
+	Recharge    *RechargeAgent
+	Checkout    *CheckoutAgent
+	Balance     *BalanceAgent
+	Market      *MarketAgent
+	Amount      *AmountAgent
+	Account     *AccountAgent
+	Coupon      *CouponAgent
+	Integration *IntegrationAgent
 }
 
 type service struct {
@@ -121,19 +122,21 @@ func NewAgent(httpClient *http.Client) *Agent {
 	couponBaseURL, _ := url.Parse(defaultCouponBaseURL)
 	checkoutBaseURL, _ := url.Parse(defaultCheckoutBaseURL)
 	balanceBaseURL, _ := url.Parse(defaultBalanceBaseURL)
-	rechargeBaeURL, _ := url.Parse(defaultRechargeBaseURL)
-	amountBaeURL, _ := url.Parse(defaultAmountBaseURL)
+	rechargeBaseURL, _ := url.Parse(defaultRechargeBaseURL)
+	amountBaseURL, _ := url.Parse(defaultAmountBaseURL)
+	integrationBaseURL, _ := url.Parse(defaultIntegrationBaseURL)
 
 	service := &service{agent}
 
 	agent.common = service
 	agent.Account = (*AccountAgent)(agent.common)
-	agent.Amount = &AmountAgent{Agent: agent.common.Agent, BaseURL: amountBaeURL}
+	agent.Amount = &AmountAgent{Agent: agent.common.Agent, BaseURL: amountBaseURL}
 	agent.Balance = &BalanceAgent{Agent: agent.common.Agent, BaseURL: balanceBaseURL}
 	agent.Checkout = &CheckoutAgent{Agent: agent.common.Agent, BaseURL: checkoutBaseURL}
 	agent.Coupon = &CouponAgent{Agent: agent.common.Agent, BaseURL: couponBaseURL}
 	agent.Market = &MarketAgent{Agent: agent.common.Agent, BaseURL: marketBaseURL}
-	agent.Recharge = &RechargeAgent{Agent: agent.common.Agent, BaseURL: rechargeBaeURL}
+	agent.Recharge = &RechargeAgent{Agent: agent.common.Agent, BaseURL: rechargeBaseURL}
+	agent.Integration = &IntegrationAgent{Agent: agent.common.Agent, BaseURL: integrationBaseURL}
 
 	return agent
 }
