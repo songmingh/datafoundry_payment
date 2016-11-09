@@ -7,6 +7,3 @@ type APIResponse struct {
 	status  int    `json:"status,omitempty"`
 	//Data    interface{} `json:"data,omitempty"`
 }
-
-type Summary struct {
-}
