@@ -131,6 +131,7 @@ func (agent *IntegrationAgent) GetItem(r *http.Request, repoName, itemName strin
 	} else {
 		item.Name = apiitem.Name
 		item.Url = apiitem.Url
+		item.Sameple = apiitem.Sameple
 		item.UpdateAt = apiitem.UpdateAt
 		item.Owner = apiitem.Owner
 		for _, apiattr := range apiitem.Attrs {
