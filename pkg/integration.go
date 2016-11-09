@@ -35,13 +35,13 @@ type DataItem struct {
 	Url      string         `json:"url,omitempty"`
 	UpdateAt string         `json:"update_at,omitempty"`
 	Sameple  string         `json:"sample,omitempty"`
-	Owner    string         `json:"owner,omitpemty"`
+	Owner    string         `json:"owner,omitempty"`
 	Attrs    []DataItemAttr `json:"attrs,omitempty"`
 }
 
 type DataItemAttr struct {
 	Name    string `json:"attr_name,omitempty"`
-	Comment string `json:"instruction,omitempty"`
+	Comment string `json:"comment,omitempty"`
 	Example string `json:"example,omitempty"`
 	Order   int    `json:"order,omitempty"`
 }

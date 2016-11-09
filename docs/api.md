@@ -101,7 +101,7 @@ GET /payment/v1/amounts?namespace=hello
   }
 ]
 ```
-GET /payment/v1/amount/we?namespace=hello
+GET /payment/v1/amount/:tid?namespace=hello
 
 ```json
 {
@@ -136,7 +136,7 @@ GET /payment/v1/regions
 ]
 ```
 
-GET /payment/v1/coupon/xxeefd
+GET /payment/v1/coupon/:couponcode
 
 ```json
 {
@@ -155,6 +155,81 @@ POST /payment/v1/redeem -d  '{"serial":"xxeefd","code":"ssa","namespace":"chaizs
   "region": "cn-north-1"
 }
 ```
+
+GET /integration/v1/repos
+
+```json
+[
+  {
+    "repo_name": "repo_aaa",
+    "class": "Class A",
+    "label": "Label 1",
+    "description": "description of this repo.",
+    "image_url": "www.example.com"
+  },
+  {
+    "repo_name": "repo_bbb",
+    "class": "Class B",
+    "label": "Label 2",
+    "description": "description of this repo",
+    "image_url": "www.example.com"
+  }
+]
+```
+
+
+GET /integration/v1/repos/:repo
+
+```json
+{
+  "repo_name": "repo_aaa",
+  "description": "description of repo_aaa",
+  "owner": "owner info of repo_aaa",
+  "items": [
+    {
+      "item_name": "item_1",
+      "url": "www.example.com"
+    },
+    {
+      "item_name": "item_2",
+      "url": "www.example.com"
+    }
+  ]
+}
+```
+
+GET /integration/v1/repos/:repo/items/:item
+
+```json
+{
+  "item_name": "item_1",
+  "url": "www.example.com",
+  "update_at": "2016-11-04T07:45:59Z",
+  "owner": "own info of item.",
+  "attrs": [
+    {
+      "attr_name": "attr1",
+      "comment": "comment of attr1",
+      "example": "a",
+      "order": 1
+    },
+    {
+      "attr_name": "attr2",
+      "comment": "comment of attr2",
+      "example": "2",
+      "order": 2
+    },
+    {
+      "attr_name": "attr3",
+      "comment": "comment of attr3",
+      "example": "ok",
+      "order": 3
+    }
+  ]
+}
+```
+
+
 
   ** identification  jd
 
