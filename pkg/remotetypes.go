@@ -103,14 +103,15 @@ type apiCoupon struct {
 }
 
 type apiDataRepo struct {
-	RepoID   int           `json:"repoId"`
-	Name     string        `json:"repoName"`
-	Class    string        `json:"class"`
-	Label    string        `json:"label"`
-	Desc     string        `json:"description"`
-	Owner    string        `json:"createUser"`
-	ImageUrl string        `json:"imageUrl"`
-	Items    []apiDataItem `json:"items"`
+	RepoID      int           `json:"repoId"`
+	Name        string        `json:"repoName"`
+	DisplayName string        `json:"chRepoName"`
+	Class       string        `json:"class"`
+	Label       string        `json:"label"`
+	Desc        string        `json:"description"`
+	Owner       string        `json:"createUser"`
+	ImageUrl    string        `json:"imageUrl"`
+	Items       []apiDataItem `json:"items"`
 }
 
 type apiDataItem struct {

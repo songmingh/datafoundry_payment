@@ -20,13 +20,14 @@ type Integration struct {
 
 type DataRepo struct {
 	//RepoID   int        `json:"repo_id,omitempty"`
-	Name     string     `json:"repo_name,omitempty"`
-	Class    string     `json:"class,omitempty"`
-	Label    string     `json:"label,omitempty"`
-	Desc     string     `json:"description,omitempty"`
-	Owner    string     `json:"owner,omitempty"`
-	ImageUrl string     `json:"image_url,omitempty"`
-	Items    []DataItem `json:"items,omitempty"`
+	Name        string     `json:"repo_name,omitempty"`
+	DisplayName string     `json:"display_name,omitempty"`
+	Class       string     `json:"class,omitempty"`
+	Label       string     `json:"label,omitempty"`
+	Desc        string     `json:"description,omitempty"`
+	Owner       string     `json:"owner,omitempty"`
+	ImageUrl    string     `json:"image_url,omitempty"`
+	Items       []DataItem `json:"items,omitempty"`
 }
 
 type DataItem struct {
@@ -60,11 +61,12 @@ func (agent *IntegrationAgent) ListRepos(r *http.Request) (*[]DataRepo, error) {
 		for _, apirepo := range *apirepos {
 			repo := DataRepo{
 				// RepoID:   apirepo.RepoID,
-				Name:     apirepo.Name,
-				Class:    apirepo.Class,
-				Label:    apirepo.Label,
-				ImageUrl: apirepo.ImageUrl,
-				Desc:     apirepo.Desc,
+				Name:        apirepo.Name,
+				DisplayName: apirepo.DisplayName,
+				Class:       apirepo.Class,
+				Label:       apirepo.Label,
+				ImageUrl:    apirepo.ImageUrl,
+				Desc:        apirepo.Desc,
 			}
 			repos = append(repos, repo)
 		}
@@ -88,6 +90,7 @@ func (agent *IntegrationAgent) GetRepo(r *http.Request, repoName string) (*DataR
 	} else {
 		clog.Debugf("%#v", apirepo)
 		repo.Name = apirepo.Name
+		repo.DisplayName = apirepo.DisplayName
 		repo.Owner = apirepo.Owner
 		repo.Desc = apirepo.Desc
 		for _, apiitem := range apirepo.Items {
