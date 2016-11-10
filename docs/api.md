@@ -230,7 +230,33 @@ GET /integration/v1/repos/:repo/items/:item
 }
 ```
 
+GET /integration/v1/services
 
+```json
+[
+  {
+    "service_id": "c13d4-3123-11e6-8ffb-0323c75f5c",
+    "class": "数据库",
+    "provider": "Asiainfo",
+    "service_name": "Meteorological",
+    "description": "国气象科学数据共享服务网是提供气象资料共享的公益性网站，由一个主节点和分布在国家级和省级气象部门的若干个分节点网站组成。国家气象信息中心负责对中国气象科学数据共享服务网的建设和管理。",
+    "image_url": "www.example.com"
+  }
+]
+```
+
+POST /integration/v1/instance/:instance_id
+
+```json
+{
+  "uri": "mongo://username:password@mysqlhost:3306/database",
+  "hostname": "mysqlhost",
+  "port": "3306",
+  "name": "database",
+  "username": "username",
+  "password": "password"
+}
+```
 
   ** identification  jd
 
