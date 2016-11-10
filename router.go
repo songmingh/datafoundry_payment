@@ -40,6 +40,9 @@ func createRouter() *httprouter.Router {
 	router.GET(INTEGRATION_API_PREFIX+"/repos/:repo", integration.GetRepo)
 	router.GET(INTEGRATION_API_PREFIX+"/repos/:repo/items/:item", integration.GetItem)
 
+	router.GET(INTEGRATION_API_PREFIX+"/services", integration.ListDataServices)
+	router.POST(INTEGRATION_API_PREFIX+"/instance/:instance_id", integration.DataServiceInstance)
+
 	router.NotFound = &api.Mux{}
 
 	return router

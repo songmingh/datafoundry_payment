@@ -71,6 +71,7 @@ POST /payment/v1/recharge -d '{"amount":1234.34,namespace:"chaizs"}'
   "status": "active"
 }
 ```
+
 GET /payment/v1/amounts?namespace=hello
 
 ```json

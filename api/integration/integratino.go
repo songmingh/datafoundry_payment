@@ -12,10 +12,10 @@ func ListRepos(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
 
 	agent := api.Agent()
-	if resp, err := agent.Integration.ListRepos(r); err != nil {
+	if result, err := agent.Integration.ListRepos(r); err != nil {
 		api.RespError(w, err)
 	} else {
-		api.RespOK(w, resp)
+		api.RespOK(w, result)
 	}
 }
 
@@ -25,10 +25,10 @@ func GetRepo(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	repo := ps.ByName("repo")
 
 	agent := api.Agent()
-	if resp, err := agent.Integration.GetRepo(r, repo); err != nil {
+	if result, err := agent.Integration.GetRepo(r, repo); err != nil {
 		api.RespError(w, err)
 	} else {
-		api.RespOK(w, resp)
+		api.RespOK(w, result)
 	}
 }
 
@@ -36,10 +36,10 @@ func ListItems(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
 
 	agent := api.Agent()
-	if resp, err := agent.Recharge.Notification(r); err != nil {
+	if result, err := agent.Recharge.Notification(r); err != nil {
 		api.RespError(w, err)
 	} else {
-		api.RespOK(w, resp)
+		api.RespOK(w, result)
 	}
 }
 
@@ -50,9 +50,33 @@ func GetItem(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	item := ps.ByName("item")
 
 	agent := api.Agent()
-	if resp, err := agent.Integration.GetItem(r, repo, item); err != nil {
+	if result, err := agent.Integration.GetItem(r, repo, item); err != nil {
 		api.RespError(w, err)
 	} else {
-		api.RespOK(w, resp)
+		api.RespOK(w, result)
+	}
+}
+
+func ListDataServices(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
+
+	agent := api.Agent()
+	if result, err := agent.DataService.ListServices(r); err != nil {
+		api.RespError(w, err)
+	} else {
+		api.RespOK(w, result)
+	}
+}
+
+func DataServiceInstance(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	clog.Info("from", r.RemoteAddr, r.Method, r.URL.RequestURI(), r.Proto)
+
+	instance_id := ps.ByName("instance_id")
+
+	agent := api.Agent()
+	if result, err := agent.DataService.CreateServiceInstance(r, instance_id); err != nil {
+		api.RespError(w, err)
+	} else {
+		api.RespOK(w, result)
 	}
 }

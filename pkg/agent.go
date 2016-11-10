@@ -27,6 +27,7 @@ var (
 	defaultRechargeBaseURL    = defaultBalanceBaseURL
 	defaultAmountBaseURL      = defaultBalanceBaseURL
 	defaultIntegrationBaseURL = "https://datafoundry.integration.app.dataos.io"
+	defaultDataServiceBaseURL = "https://datafoundry.datainstance.app.dataos.io"
 )
 
 func InitBaseUrls() {
@@ -57,6 +58,11 @@ func InitBaseUrls() {
 		defaultIntegrationBaseURL = httpAddr(integrationurl)
 	}
 
+	dataserviceurl := combainHostPort("ENV_DATASERVICE_HOST", "ENV_DATASERVICE_PORT")
+	if len(dataserviceurl) > 0 {
+		defaultDataServiceBaseURL = httpAddr(dataserviceurl)
+	}
+
 	clog.Debug("couponurl", defaultCouponBaseURL)
 	clog.Debug("marketurl", defaultMarketBaseURL)
 	clog.Debug("checkouturl", defaultCheckoutBaseURL)
@@ -64,6 +70,7 @@ func InitBaseUrls() {
 	clog.Debug("rechargeurl", defaultRechargeBaseURL)
 	clog.Debug("amounturl", defaultAmountBaseURL)
 	clog.Debug("integrationurl", defaultIntegrationBaseURL)
+	clog.Debug("dataserviceurl", defaultDataServiceBaseURL)
 
 }
 
@@ -97,6 +104,7 @@ type Agent struct {
 	Account     *AccountAgent
 	Coupon      *CouponAgent
 	Integration *IntegrationAgent
+	DataService *DataServiceAgent
 }
 
 type service struct {
@@ -125,6 +133,7 @@ func NewAgent(httpClient *http.Client) *Agent {
 	rechargeBaseURL, _ := url.Parse(defaultRechargeBaseURL)
 	amountBaseURL, _ := url.Parse(defaultAmountBaseURL)
 	integrationBaseURL, _ := url.Parse(defaultIntegrationBaseURL)
+	dataServiceBaseURL, _ := url.Parse(defaultDataServiceBaseURL)
 
 	service := &service{agent}
 
@@ -137,6 +146,7 @@ func NewAgent(httpClient *http.Client) *Agent {
 	agent.Market = &MarketAgent{Agent: agent.common.Agent, BaseURL: marketBaseURL}
 	agent.Recharge = &RechargeAgent{Agent: agent.common.Agent, BaseURL: rechargeBaseURL}
 	agent.Integration = &IntegrationAgent{Agent: agent.common.Agent, BaseURL: integrationBaseURL}
+	agent.DataService = &DataServiceAgent{Agent: agent.common.Agent, BaseURL: dataServiceBaseURL}
 
 	return agent
 }
