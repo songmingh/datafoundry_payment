@@ -25,9 +25,11 @@ type InstanceCredential struct {
 type DataServiceInfo struct {
 	ServiceId    string `json:"service_id"`
 	Name         string `json:"service_name"`
+	Alias        string `json:"display_name"`
 	Class        string `json:"class"`
 	Provider     string `json:"provider"`
 	InstanceData string `json:"instance_data,omitempty"`
+	DataName     string `json:"data_name,omitempty"`
 	Desc         string `json:"description"`
 	ImageUrl     string `json:"image_url"`
 }
@@ -45,6 +47,9 @@ func (agent *DataServiceAgent) ListServices(r *http.Request) (*[]DataServiceInfo
 		for idx, service := range services {
 			services[idx].Name = service.InstanceData
 			services[idx].InstanceData = ""
+			services[idx].Alias = service.DataName
+			services[idx].DataName = ""
+
 		}
 	}
 
