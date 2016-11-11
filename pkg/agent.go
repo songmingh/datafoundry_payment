@@ -58,7 +58,7 @@ func InitBaseUrls() {
 		defaultIntegrationBaseURL = httpAddr(integrationurl)
 	}
 
-	dataserviceurl := combainHostPort("ENV_DATASERVICE_HOST", "ENV_DATASERVICE_PORT")
+	dataserviceurl := combainHostPort("ENV_DATAINSTANCE_HOST", "ENV_DATAINSTANCE_PORT")
 	if len(dataserviceurl) > 0 {
 		defaultDataServiceBaseURL = httpAddr(dataserviceurl)
 	}
