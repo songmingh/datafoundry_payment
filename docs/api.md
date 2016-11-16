@@ -102,7 +102,7 @@ GET /payment/v1/amounts?namespace=hello
   }
 ]
 ```
-GET /payment/v1/amount/:tid?namespace=hello
+GET /payment/v1/amounts/:tid?namespace=hello
 
 ```json
 {
