@@ -1,4 +1,4 @@
-GET /payment/v1/account?namespace=hello-org
+GET /payment/v1/account?namespace=hello-org&region=cn-north-1
 
 ```json
 {
