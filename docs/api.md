@@ -1,4 +1,4 @@
-GET /payment/v1/account?namespace=hello-org
+GET /payment/v1/account?namespace=hello-org&region=cn-north-1
 
 ```json
 {
@@ -102,7 +102,7 @@ GET /payment/v1/amounts?namespace=hello
   }
 ]
 ```
-GET /payment/v1/amount/:tid?namespace=hello
+GET /payment/v1/amounts/:tid?namespace=hello
 
 ```json
 {
