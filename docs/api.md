@@ -63,7 +63,7 @@ POST /payment/v1/checkout -d '{"plan_id":"zwwqe","namespace":"chaizs","region":"
   "status": "active"
 }
 ```
-POST /payment/v1/recharge -d '{"amount":1234.34,namespace:"chaizs"}'
+POST /payment/v1/recharge -d '{"amount":1234.34,"namespace":"chaizs"}'
 
 ```json
 {
